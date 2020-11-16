@@ -1,5 +1,6 @@
 from flask import Flask
 from flask import render_template, request, redirect
+from operator import itemgetter
 
 from todo_app.flask_config import Config
 from todo_app.data.session_items import get_items, add_item, save_item, get_item
@@ -12,6 +13,13 @@ app.config.from_object(Config)
 def index():
 
     items = get_items()
+    if request.values.get('sort') == '1':
+        items = sorted(items, key=itemgetter('status'))
+    elif request.values.get('sort') == '2':
+        items = sorted(items, key=itemgetter('status'), reverse=True)
+    else:
+        items = sorted(items, key=itemgetter('id'))
+
     return render_template('index.html', items=items)
 
 @app.route('/new_item', methods=['POST'])
