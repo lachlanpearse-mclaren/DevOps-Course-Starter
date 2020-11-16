@@ -10,9 +10,34 @@
   <div class="row">
     <div class="col-md-12">
       <h2>Items</h2>
-      <ul class="list-group mb-4">
-        <!-- List the todo items here -->
-      </ul>
+      <table class="table" border="0">
+        <tr>
+          <td><strong>Title</strong></td>
+          {% if request.values.get('sort') == None %}
+          <td><strong><a href="/?sort=2" class="table">Status</a></strong></td>
+          {% elif request.values.get('sort') == '2' %}
+          <td><strong><a href="/?sort=1" class="table">Status</a></strong></td>
+          {% elif request.values.get('sort') == '1' %}
+          <td><strong><a href="/?sort=2" class="table">Status</a></strong></td>
+          {% endif %}
+          <td><strong>Actions</strong></td>
+        </tr>
+        {% for item in items %}
+        <tr>
+          <td>{{ item.title }}</td>
+          <td>{{ item.status }}</td>
+          <td><form id="toggle_item_{{ item.id }}" action="/toggle_status" method="POST"><input type="hidden" name="toggle_item_id" value="{{ item.id }}"><a href="#" onclick="document.getElementById('toggle_item_{{ item.id }}').submit()">Toggle Status</a></form><form id="remove_item_{{ item.id }}" action="/remove_item" method="POST"><input type="hidden" name="remove_id" value="{{ item.id }}"><a href="#" onclick="document.getElementById('remove_item_{{ item.id }}').submit()">Remove Item</a></form></td>
+        </tr>
+        {% endfor %}
+      </table>
+      <a href="/">Clear Filter</a><br />
     </div>
+  </div>
+  <br />
+  <div class="row">
+    <form action="/new_item" method="POST">
+      Add New Item:&nbsp; <input type="text" name="new_item_title"><br />
+      <input type="submit">
+    </form>
   </div>
 {% endblock %}
