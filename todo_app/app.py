@@ -3,7 +3,7 @@ from flask import render_template, request, redirect
 from operator import itemgetter
 
 from todo_app.flask_config import Config
-from todo_app.data.session_items import get_items, add_item, save_item, get_item
+from todo_app.data.session_items import get_items, add_item, save_item, get_item, remove_item
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -26,6 +26,12 @@ def index():
 def new_item():
     new_item_title = request.form.get('new_item_title')
     items = add_item(new_item_title)
+    return redirect('/')
+
+@app.route('/remove_item', methods=['POST'])
+def remove_existing_item():
+    remove_id = request.form.get('remove_id')
+    items = remove_item(remove_id)
     return redirect('/')
 
 @app.route('/toggle_status', methods=['POST'])

@@ -26,7 +26,7 @@
         <tr>
           <td>{{ item.title }}</td>
           <td>{{ item.status }}</td>
-          <td><form id="toggle_item_{{ item.id }}" action="/toggle_status" method="POST"><input type="hidden" name="toggle_item_id" value="{{ item.id }}"><a href="#" onclick="document.getElementById('toggle_item_{{ item.id }}').submit()">Toggle Status</a></form></td>
+          <td><form id="toggle_item_{{ item.id }}" action="/toggle_status" method="POST"><input type="hidden" name="toggle_item_id" value="{{ item.id }}"><a href="#" onclick="document.getElementById('toggle_item_{{ item.id }}').submit()">Toggle Status</a></form><form id="remove_item_{{ item.id }}" action="/remove_item" method="POST"><input type="hidden" name="remove_id" value="{{ item.id }}"><a href="#" onclick="document.getElementById('remove_item_{{ item.id }}').submit()">Remove Item</a></form></td>
         </tr>
         {% endfor %}
       </table>
