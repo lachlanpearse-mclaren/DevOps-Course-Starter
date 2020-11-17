@@ -16,9 +16,9 @@
           {% if request.values.get('sort') == None %}
           <td><strong><a href="/?sort=2" class="table">Status</a></strong></td>
           {% elif request.values.get('sort') == '2' %}
-          <td><strong><a href="/?sort=1" class="table">Status</a></strong></td>
+          <td><strong><a href="/?sort=1" class="table">Status</a>&nbsp;&circ;</strong></td>
           {% elif request.values.get('sort') == '1' %}
-          <td><strong><a href="/?sort=2" class="table">Status</a></strong></td>
+          <td><strong><a href="/?sort=2" class="table">Status</a>&nbsp;&caron;</strong></td>
           {% endif %}
           <td><strong>Actions</strong></td>
         </tr>
@@ -30,7 +30,7 @@
         </tr>
         {% endfor %}
       </table>
-      <a href="/">Clear Filter</a><br />
+      <a href="/">Clear Sort</a><br />
     </div>
   </div>
   <br />

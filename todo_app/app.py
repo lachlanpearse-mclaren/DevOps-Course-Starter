@@ -26,13 +26,13 @@ def index():
 def new_item():
     new_item_title = request.form.get('new_item_title')
     items = add_item(new_item_title)
-    return redirect('/')
+    return redirect(request.headers.get('Referer'))
 
 @app.route('/remove_item', methods=['POST'])
 def remove_existing_item():
     remove_id = request.form.get('remove_id')
     items = remove_item(remove_id)
-    return redirect('/')
+    return redirect(request.headers.get('Referer'))
 
 @app.route('/toggle_status', methods=['POST'])
 def toggle_status():
@@ -44,7 +44,7 @@ def toggle_status():
         toggle_item['status'] = "Not Started"
 
     item = save_item(toggle_item)
-    return redirect('/')
+    return redirect(request.headers.get('Referer'))
 
 if __name__ == '__main__':
     app.run()
