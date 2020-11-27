@@ -16,9 +16,9 @@
           {% if request.values.get('sort') == None %}
           <td><strong><a href="/?sort=2" class="table">Status</a></strong></td>
           {% elif request.values.get('sort') == '2' %}
-          <td><strong><a href="/?sort=1" class="table">Status</a>&nbsp;&circ;</strong></td>
+          <td><strong><a href="/?sort=1" class="table">Status</a> &circ;</strong></td>
           {% elif request.values.get('sort') == '1' %}
-          <td><strong><a href="/?sort=2" class="table">Status</a>&nbsp;&caron;</strong></td>
+          <td><strong><a href="/?sort=2" class="table">Status</a> &caron;</strong></td>
           {% endif %}
           <td><strong>Actions</strong></td>
         </tr>
@@ -26,7 +26,15 @@
         <tr>
           <td>{{ item.title }}</td>
           <td>{{ item.status }}</td>
-          <td><form id="toggle_item_{{ item.id }}" action="/toggle_status" method="POST"><input type="hidden" name="toggle_item_id" value="{{ item.id }}"><a href="#" onclick="document.getElementById('toggle_item_{{ item.id }}').submit()">Toggle Status</a></form><form id="remove_item_{{ item.id }}" action="/remove_item" method="POST"><input type="hidden" name="remove_id" value="{{ item.id }}"><a href="#" onclick="document.getElementById('remove_item_{{ item.id }}').submit()">Remove Item</a></form></td>
+          <td><form id="toggle_item_{{ item.id }}" action="/toggle_status" method="POST">
+            <input type="hidden" name="toggle_item_id" value="{{ item.id }}">
+            <input type="submit" value="Toggle Status" class="btn btn-link p-0">
+          </form>
+          <form id="remove_item_{{ item.id }}" action="/remove_item" method="POST">
+            <input type="hidden" name="remove_id" value="{{ item.id }}">
+            <input type="submit" value="Remove Item" class="btn btn-link p-0">
+          </form>
+          </td>
         </tr>
         {% endfor %}
       </table>
@@ -36,8 +44,8 @@
   <br />
   <div class="row">
     <form action="/new_item" method="POST">
-      Add New Item:&nbsp; <input type="text" name="new_item_title"><br />
-      <input type="submit">
+      Add New Item: <input type="text" name="new_item_title" class="input"> 
+      <input type="submit" class="button">
     </form>
   </div>
 {% endblock %}

@@ -79,8 +79,7 @@ def remove_item(id):
     for i in range(len(existing_items)):
         if existing_items[i]['id'] == int(id):
             del existing_items[i]
-            break
+            session['items'] = existing_items
+            return
 
-    session['items'] = existing_items
-
-    return
+    
