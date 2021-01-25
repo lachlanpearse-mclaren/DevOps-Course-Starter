@@ -25,7 +25,13 @@
         {% for item in items %}
         <tr>
           <td>{{ item.name }}</td>
-          <td>{{ item.closed }}</td>
+            {% if trello_list_ids.todo == item.idList %}
+              <td>To Do</td>
+            {% elif trello_list_ids.doing == item.idList %}
+              <td>Doing</td>
+            {% elif trello_list_ids.done == item.idList %}
+              <td>Done</td>
+            {% endif %}
           <td><form id="toggle_item_{{ item.id }}" action="/toggle_status" method="POST">
             <input type="hidden" name="toggle_item_id" value="{{ item.id }}">
             <input type="submit" value="Toggle Status" class="btn btn-link p-0">
