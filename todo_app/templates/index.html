@@ -24,8 +24,8 @@
         </tr>
         {% for item in items %}
         <tr>
-          <td>{{ item.title }}</td>
-          <td>{{ item.status }}</td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.closed }}</td>
           <td><form id="toggle_item_{{ item.id }}" action="/toggle_status" method="POST">
             <input type="hidden" name="toggle_item_id" value="{{ item.id }}">
             <input type="submit" value="Toggle Status" class="btn btn-link p-0">

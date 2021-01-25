@@ -1,6 +1,8 @@
 from flask import Flask
 from flask import render_template, request, redirect
 from operator import itemgetter
+import requests
+from todo_app.data.trello_api import get_trello_todo_cards
 
 from todo_app.flask_config import Config
 from todo_app.data.session_items import get_items, add_item, save_item, get_item, remove_item
@@ -12,7 +14,7 @@ app.config.from_object(Config)
 @app.route('/')
 def index():
 
-    items = get_items()
+    items = get_trello_todo_cards()
     if request.values.get('sort') == '1':
         items = sorted(items, key=itemgetter('status'))
     elif request.values.get('sort') == '2':
