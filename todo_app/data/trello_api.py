@@ -30,3 +30,7 @@ def get_trello_cards():
     response = requests.get(f'https://api.trello.com/1/boards/{trello_board_id}/cards?key={trello_auth_key[0]}&token={trello_auth_key[1]}')
 
     return response.json()
+
+def move_trello_card(card_id, new_list_id):
+    trello_auth_key = get_trello_keys()
+    response = requests.put(f'https://api.trello.com/1/cards/{card_id}?key={trello_auth_key[0]}&token={trello_auth_key[1]}&idList={new_list_id}')

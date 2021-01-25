@@ -1,10 +1,9 @@
 from flask import Flask
 from flask import render_template, request, redirect
 from operator import itemgetter
-from todo_app.data.trello_api import get_trello_cards, get_trello_list_id
+from todo_app.data.trello_api import get_trello_cards, get_trello_list_id, move_trello_card
 
 from todo_app.flask_config import Config
-from todo_app.data.session_items import get_items, add_item, save_item, get_item, remove_item
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -27,6 +26,7 @@ def index():
 
     return render_template('index.html', items=items,trello_list_ids=trello_list_ids)
 
+"""
 @app.route('/new_item', methods=['POST'])
 def new_item():
     new_item_title = request.form.get('new_item_title')
@@ -39,16 +39,15 @@ def remove_existing_item():
     items = remove_item(remove_id)
     return redirect(request.headers.get('Referer'))
 
+"""
+
 @app.route('/toggle_status', methods=['POST'])
 def toggle_status():
-    toggle_item = get_item(request.form.get('toggle_item_id'))
+    trello_card_id = request.form.get('toggle_item_id')
+    new_trello_list_id = request.form.get('new_trello_list_id')
 
-    if toggle_item['status'] == "Not Started":
-        toggle_item['status'] = "Completed"
-    else:
-        toggle_item['status'] = "Not Started"
+    move_trello_card(trello_card_id,new_trello_list_id)
 
-    item = save_item(toggle_item)
     return redirect(request.headers.get('Referer'))
 
 if __name__ == '__main__':

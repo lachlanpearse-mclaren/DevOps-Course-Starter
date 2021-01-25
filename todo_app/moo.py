@@ -1,8 +1,3 @@
-from data.trello_api import get_trello_list_id
+from data.trello_api import move_trello_card
 
-trello_list_ids = {}
-trello_list_ids['todo'] = get_trello_list_id('To Do')
-trello_list_ids['doing'] = get_trello_list_id('Doing')
-trello_list_ids['done'] = get_trello_list_id('Done')
-
-print(trello_list_ids)
+move_trello_card('600ee4029c309a627d686224','600ede7caeb0c67b818ec913')
