@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import render_template, request, redirect
 from operator import itemgetter
-from todo_app.data.trello_api import get_trello_cards, get_trello_list_id, move_trello_card
+from todo_app.data.trello_api import archive_trello_card, get_trello_cards, get_trello_list_id, move_trello_card, create_trello_card
 
 from todo_app.flask_config import Config
 
@@ -26,20 +26,20 @@ def index():
 
     return render_template('index.html', items=items,trello_list_ids=trello_list_ids)
 
-"""
+
 @app.route('/new_item', methods=['POST'])
 def new_item():
     new_item_title = request.form.get('new_item_title')
-    items = add_item(new_item_title)
+    create_trello_card(new_item_title)
     return redirect(request.headers.get('Referer'))
 
-@app.route('/remove_item', methods=['POST'])
+
+@app.route('/archive_item', methods=['POST'])
 def remove_existing_item():
-    remove_id = request.form.get('remove_id')
-    items = remove_item(remove_id)
+    archive_id = request.form.get('archive_item_id')
+    archive_trello_card(archive_id)
     return redirect(request.headers.get('Referer'))
 
-"""
 
 @app.route('/toggle_status', methods=['POST'])
 def toggle_status():
