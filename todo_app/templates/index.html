@@ -10,23 +10,23 @@
   <div class="row">
     <div class="col-md-12">
       <h2>To Do List</h2>
-      <table class="table table-hover table-sm table-responsive-lg">
+      <table class="table table-hover table-sm">
         <thead>
           <tr>
-            <th><strong>Task</strong></th>
+            <th scope="col"><strong>Task</strong></th>
             {% if request.values.get('sort') == None %}
-            <th><strong><a href="/?sort=2" class="table">Status</a></strong></th>
+            <th scope="col"><strong><a href="/?sort=2" class="table">Status</a></strong></th>
             {% elif request.values.get('sort') == '2' %}
-            <th><strong><a href="/?sort=1" class="table">Status</a> &circ;</strong></th>
+            <th scope="col"><strong><a href="/?sort=1" class="table">Status</a> &circ;</strong></th>
             {% elif request.values.get('sort') == '1' %}
-            <th><strong><a href="/?sort=2" class="table">Status</a> &caron;</strong></th>
+            <th scope="col"><strong><a href="/?sort=2" class="table">Status</a> &caron;</strong></th>
             {% endif %}
-            <th><strong>Actions</strong></td>
+            <th scope="col"><strong>Actions</strong></td>
           </tr>
       </thead>
       <tbody>
         {% for item in items %}
-        <tr>
+        <tr scope="row">
           <td>{{ item.name }}</td>
             {% if trello_list_ids.todo == item.idList %}
               <td>To Do</td>
@@ -35,47 +35,36 @@
             {% elif trello_list_ids.done == item.idList %}
               <td>Done</td>
             {% endif %}
-          <td>
-            <form id="toggle_item_{{ item.id }}" action="/toggle_status" method="POST">
-              <div class="form-row">
-                <div class="col-sm-1">
-                  Status:
-                </div>
-                <div class="col-sm-2">
-                  <select name="new_trello_list_id" size="1" class="form-control form-control-sm">
-                    <option value="">-- Select --</option>
+          <td class="form-inline">
+              <form id="toggle_item_{{ item.id }}" action="/toggle_status" method="POST" class="form-inline">
+                  <select id="new_trello_list_id" name="new_trello_list_id" class="form-control form-control-sm mx-2" onchange="document.getElementById('toggle_item_{{ item.id}}').submit()">
+                    <option value="default">-- Status --</option>
                     <option value="{{ trello_list_ids.todo}}">To Do</option>
                     <option value="{{ trello_list_ids.doing}}">Doing</option>
                     <option value="{{ trello_list_ids.done}}">Done</option>
                   </select>
-                </div>
-                <div class="col-sm-2">
-                  <input type="hidden" name="toggle_item_id" value="{{ item.id }}">
-                  <input type="submit" value="Update" class="btn btn-primary btn-sm">
-                </div>
-              
-            </form>
-            <form id="archive_item_{{ item.id }}" action="/archive_item" method="POST">
-              <div class="col-sm-2">
-                <input type="hidden" name="archive_item_id" value="{{ item.id }}">
-                <input type="submit" value="Archive" class="btn btn-danger btn-sm">
-              </div>
-            </div>
+                  <input type="hidden" name="toggle_item_id" value="{{ item.id }}">                
+              </form>
 
+            <form id="archive_item_{{ item.id }}" action="/archive_item" method="POST" class="form-inline">
+                <input type="hidden" name="archive_item_id" value="{{ item.id }}">
+                 <input type="submit" value="Archive" class="btn btn-link btn-sm mx-2">
             </form>
           </td>
         </tr>
         {% endfor %}
       </tbody>
       </table>
-      <a href="/">Clear Sort</a><br />
+      <a href="/">Clear Sort</a>
+      <br />
+      <br />
+      <form action="/new_item" method="POST">
+        Add New Item: <input type="text" name="new_item_title" class="input"> 
+        <input type="submit" class="button">
+      </form>
+
     </div>
   </div>
-  <br />
-  <div class="row">
-    <form action="/new_item" method="POST">
-      Add New Item: <input type="text" name="new_item_title" class="input"> 
-      <input type="submit" class="button">
-    </form>
-  </div>
+
+
 {% endblock %}
