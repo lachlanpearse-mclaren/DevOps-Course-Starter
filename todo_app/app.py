@@ -1,8 +1,7 @@
 from flask import Flask
 from flask import render_template, request, redirect
 from operator import itemgetter
-import requests
-from todo_app.data.trello_api import get_trello_todo_cards
+from todo_app.data.trello_api import get_trello_cards, get_trello_list_id
 
 from todo_app.flask_config import Config
 from todo_app.data.session_items import get_items, add_item, save_item, get_item, remove_item
@@ -14,15 +13,19 @@ app.config.from_object(Config)
 @app.route('/')
 def index():
 
-    items = get_trello_todo_cards()
-    if request.values.get('sort') == '1':
-        items = sorted(items, key=itemgetter('status'))
-    elif request.values.get('sort') == '2':
-        items = sorted(items, key=itemgetter('status'), reverse=True)
-    else:
-        items = sorted(items, key=itemgetter('id'))
+    trello_list_ids = {}
+    trello_list_ids['todo'] = get_trello_list_id('To Do')
+    trello_list_ids['doing'] = get_trello_list_id('Doing')
+    trello_list_ids['done'] = get_trello_list_id('Done')
 
-    return render_template('index.html', items=items)
+    items = get_trello_cards()
+
+    if request.values.get('sort') == '1':
+        items = sorted(items, key=itemgetter('idList','name'))
+    elif request.values.get('sort') == '2':
+        items = sorted(items, key=itemgetter('idList','name'), reverse=True)
+
+    return render_template('index.html', items=items,trello_list_ids=trello_list_ids)
 
 @app.route('/new_item', methods=['POST'])
 def new_item():

@@ -1,5 +1,8 @@
-from data.trello_api import get_trello_todo_cards
+from data.trello_api import get_trello_list_id
 
-todo_cards = get_trello_todo_cards()
+trello_list_ids = {}
+trello_list_ids['todo'] = get_trello_list_id('To Do')
+trello_list_ids['doing'] = get_trello_list_id('Doing')
+trello_list_ids['done'] = get_trello_list_id('Done')
 
-print(todo_cards)
+print(trello_list_ids)
