@@ -3,7 +3,7 @@
 
 {% block content %}
   <div class="jumbotron">
-    <h1 class="display-4">To-Do App</h1>
+    <h1 class="display-7">To-Do App</h1>
     <p class="lead">Just another to-do app.</p>
   </div>
 
@@ -11,17 +11,20 @@
     <div class="col-md-12">
       <h2>Items</h2>
       <table class="table" border="0">
-        <tr>
-          <td><strong>Title</strong></td>
-          {% if request.values.get('sort') == None %}
-          <td><strong><a href="/?sort=2" class="table">Status</a></strong></td>
-          {% elif request.values.get('sort') == '2' %}
-          <td><strong><a href="/?sort=1" class="table">Status</a> &circ;</strong></td>
-          {% elif request.values.get('sort') == '1' %}
-          <td><strong><a href="/?sort=2" class="table">Status</a> &caron;</strong></td>
-          {% endif %}
-          <td><strong>Actions</strong></td>
-        </tr>
+        <thead>
+          <tr>
+            <th><strong>Title</strong></th>
+            {% if request.values.get('sort') == None %}
+            <th><strong><a href="/?sort=2" class="table">Status</a></strong></th>
+            {% elif request.values.get('sort') == '2' %}
+            <th><strong><a href="/?sort=1" class="table">Status</a> &circ;</strong></th>
+            {% elif request.values.get('sort') == '1' %}
+            <th><strong><a href="/?sort=2" class="table">Status</a> &caron;</strong></th>
+            {% endif %}
+            <th><strong>Actions</strong></td>
+          </tr>
+      </thead>
+      <tbody>
         {% for item in items %}
         <tr>
           <td>{{ item.name }}</td>
@@ -32,17 +35,38 @@
             {% elif trello_list_ids.done == item.idList %}
               <td>Done</td>
             {% endif %}
-          <td><form id="toggle_item_{{ item.id }}" action="/toggle_status" method="POST">
-            <input type="hidden" name="toggle_item_id" value="{{ item.id }}">
-            <input type="submit" value="Toggle Status" class="btn btn-link p-0">
-          </form>
-          <form id="remove_item_{{ item.id }}" action="/remove_item" method="POST">
-            <input type="hidden" name="remove_id" value="{{ item.id }}">
-            <input type="submit" value="Remove Item" class="btn btn-link p-0">
-          </form>
+          <td>
+            <form id="toggle_item_{{ item.id }}" action="/toggle_status" method="POST">
+              <div class="form-row">
+                <div class="col-sm-1">
+                  Status:
+                </div>
+                <div class="col-sm-2">
+                  <select name="new_trello_list_id" size="1" class="form-control form-control-sm">
+                    <option value="">-- Select --</option>
+                    <option value="{{ trello_list_ids.todo}}">To Do</option>
+                    <option value="{{ trello_list_ids.doing}}">Doing</option>
+                    <option value="{{ trello_list_ids.done}}">Done</option>
+                  </select>
+                </div>
+                <div class="col-sm-2">
+                  <input type="hidden" name="toggle_item_id" value="{{ item.id }}">
+                  <input type="submit" value="Update" class="btn btn-primary btn-sm">
+                </div>
+              
+            </form>
+            <form id="remove_item_{{ item.id }}" action="/remove_item" method="POST">
+              <div class="col-sm-2">
+                <input type="hidden" name="remove_item_id" value="{{ item.id }}">
+                <input type="submit" value="Remove Item" class="btn btn-danger btn-sm">
+              </div>
+            </div>
+
+            </form>
           </td>
         </tr>
         {% endfor %}
+      </tbody>
       </table>
       <a href="/">Clear Sort</a><br />
     </div>
