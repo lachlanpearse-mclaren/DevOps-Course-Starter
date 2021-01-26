@@ -19,9 +19,9 @@ def index():
     items = get_trello_cards()
 
     if request.values.get('sort') == '1':
-        items = sorted(items, key=itemgetter('idList','name'))
+        items = sorted(items, key=itemgetter('idList'))
     elif request.values.get('sort') == '2':
-        items = sorted(items, key=itemgetter('idList','name'), reverse=True)
+        items = sorted(items, key=itemgetter('idList'), reverse=True)
 
     return render_template('index.html', items=items,trello_list_ids=trello_list_ids)
 
