@@ -1,15 +1,17 @@
 import requests
+import os
 
 def get_trello_keys():
-    with open('./todo_app/data/trello_key.txt','r') as f:
-        f.seek(0)
-        key_line = f.readline()
-        auth_keys = key_line.split(',',1)
+    
+    auth_keys = []
+    auth_keys[0] = os.getenv('TRELLO_AUTH')
+    auth_keys[1] = os.getenv('TRELLO_TOKEN')
         
-        return auth_keys
+    return auth_keys
 
 def get_trello_board_id():
-    return '600ede7caeb0c67b818ec912'
+    board_id = os.getenv('TRELLO_BOARD_ID')
+    return board_id
 
 def get_trello_list_id(list_name):
     trello_auth_key = get_trello_keys()
