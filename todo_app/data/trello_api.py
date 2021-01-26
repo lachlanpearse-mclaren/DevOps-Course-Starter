@@ -4,8 +4,8 @@ import os
 def get_trello_keys():
     
     auth_keys = []
-    auth_keys[0] = os.getenv('TRELLO_AUTH')
-    auth_keys[1] = os.getenv('TRELLO_TOKEN')
+    auth_keys.append(os.getenv('TRELLO_AUTH'))
+    auth_keys.append(os.getenv('TRELLO_TOKEN'))
         
     return auth_keys
 
