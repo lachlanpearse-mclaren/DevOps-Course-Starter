@@ -4,6 +4,16 @@
 
 The project uses poetry for Python to create an isolated environment and manage package dependencies. To prepare your system, ensure you have an official distribution of Python version 3.7+ and install poetry using one of the following commands (as instructed by the [poetry documentation](https://python-poetry.org/docs/#system-requirements)):
 
+### Configuring Trello API Information
+
+To configure this application to work with Trello's API, you need to update the following variables in the .env file:
+
+    TRELLO_AUTH: Your auth key from Trello
+    TRELLO_TOKEN: Your security token from Trello
+    TRELLO_BOARD_ID: The board ID you wish to use for this program
+
+Also ensure your board specified above contains three lists: "To Do", "Doing" and "Done". 
+
 ### Poetry installation (Bash)
 
 ```bash
