@@ -1,6 +1,13 @@
 import requests
 import os
 
+class TrelloCard:
+    def __init__(self, id, name, idList):
+        self.id = id
+        self.name = name
+        self.idList = idList
+
+
 def get_trello_keys():
     
     auth_keys = []
