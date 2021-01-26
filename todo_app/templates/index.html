@@ -37,13 +37,14 @@
             {% endif %}
           <td class="form-inline">
               <form id="toggle_item_{{ item.id }}" action="/toggle_status" method="POST" class="form-inline">
-                  <select id="new_trello_list_id" name="new_trello_list_id" class="form-control form-control-sm mx-2" onchange="document.getElementById('toggle_item_{{ item.id}}').submit()">
+                  <select id="new_trello_list_id_{{ item.id }}" name="new_trello_list_id" class="form-control form-control-sm mx-2">
                     <option value="default">-- Status --</option>
                     <option value="{{ trello_list_ids.todo}}">To Do</option>
                     <option value="{{ trello_list_ids.doing}}">Doing</option>
                     <option value="{{ trello_list_ids.done}}">Done</option>
                   </select>
-                  <input type="hidden" name="toggle_item_id" value="{{ item.id }}">                
+                  <input type="hidden" name="toggle_item_id" value="{{ item.id }}">
+                  <input type="button" class="btn btn-primary btn-sm" value="Update" onclick="if(document.getElementById('new_trello_list_id_{{ item.id }}').options[document.getElementById('new_trello_list_id_{{ item.id }}').selectedIndex].value == 'default'){window.alert('You must select a status to change to!')}else{document.getElementById('toggle_item_{{ item.id }}').submit()}">                
               </form>
 
             <form id="archive_item_{{ item.id }}" action="/archive_item" method="POST" class="form-inline">
