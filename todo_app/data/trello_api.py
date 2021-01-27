@@ -38,7 +38,13 @@ def get_trello_cards():
     trello_board_id = get_trello_board_id()
     response = requests.get(f'https://api.trello.com/1/boards/{trello_board_id}/cards?key={trello_auth_key[0]}&token={trello_auth_key[1]}')
 
-    return response.json()
+    card_list = []
+    for card in response.json():
+        existing_card = TrelloCard(card['id'], card['name'], card['idList'])
+
+        card_list.append(existing_card)
+
+    return card_list
 
 def move_trello_card(card_id, new_list_id):
     trello_auth_key = get_trello_keys()
