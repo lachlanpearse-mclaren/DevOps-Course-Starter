@@ -14,6 +14,7 @@
         <thead>
           <tr>
             <th scope="col"><strong>Task</strong></th>
+            <th scope="col"><strong>Description</strong></th>
             <th scopt="col"><strong>Due Date</strong></th>
             {% if request.values.get('sort') == None %}
             <th scope="col"><strong><a href="/?sort=2" class="table">Status</a></strong></th>
@@ -22,7 +23,6 @@
             {% elif request.values.get('sort') == '1' %}
             <th scope="col"><strong><a href="/?sort=2" class="table">Status</a> &caron;</strong></th>
             {% endif %}
-            <th scope="col"><strong>Description</strong></th>
             <th scope="col"><strong>Actions</strong></td>
           </tr>
       </thead>
@@ -30,6 +30,7 @@
         {% for item in items %}
         <tr scope="row">
           <td>{{ item.name }}</td>
+          <td>{{ item.description }}</td>
           <td>{{ item.due_date.strftime('%d-%m-%Y') }}</td>
             {% if trello_list_ids.todo == item.idList %}
               <td>To Do</td>
@@ -38,7 +39,6 @@
             {% elif trello_list_ids.done == item.idList %}
               <td>Done</td>
             {% endif %}
-          <td>{{ item.description }}</td>
           <td class="form-inline">
               <form id="toggle_item_{{ item.id }}" action="/toggle_status" method="POST" class="form-inline">
                   <select id="new_trello_list_id_{{ item.id }}" name="new_trello_list_id" class="form-control form-control-sm mx-2">
@@ -63,11 +63,27 @@
       <a href="/">Clear Sort</a>
       <br />
       <br />
-      <form action="/new_item" method="POST">
-        Add New Item: <input type="text" name="new_item_title" class="input"> 
+      <form action="/new_item" method="POST" class="form">
+        <strong>Add New Item</strong><br /><br />
+        <table class="table-sm">
+          <tr>
+            <td class="align-top">Title:</td>
+            <td> <input type="text" name="new_item_title" class="form-control form-control-sm mx-2"></td>
+          </tr>
+          <tr>
+            <td class="align-top">Description:</td>
+            <td><textarea name="new_item_desc" class="form-control form-control-sm mx-2"></textarea></td>
+          </tr>
+          <tr>
+            <td class="align-top">Due Date:</td>
+            <td><input type="date" name="new_item_due" class="form-control form-control-sm mx-2"></td>
+          </tr>
+        </table>
+        <br />
         <input type="submit" class="button">
       </form>
-
+      <br />
+      <br />
     </div>
   </div>
 

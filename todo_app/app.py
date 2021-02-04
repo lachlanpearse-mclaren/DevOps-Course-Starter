@@ -28,12 +28,12 @@ def index():
 def new_item():
     new_item_title = request.form.get('new_item_title')
     trello_default_list = get_trello_list_id('To Do')
-    if request.form.get('due_date'):
-        due_date = datetime.datetime.strptime(request.form.get('due_date'), '%d-%m-%Y')
+    if request.form.get('new_item_due'):
+        due_date = datetime.datetime.strptime(request.form.get('new_item_due'), '%Y-%m-%d')
     else:
         due_date = datetime.date.today() + datetime.timedelta(30)
     
-    description = ""
+    description = request.form.get('new_item_desc')
 
     new_card = TrelloCard(0, new_item_title, trello_default_list, due_date, description)
     create_trello_card(new_card)
