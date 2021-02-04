@@ -6,7 +6,9 @@ class TrelloCard:
         self.id = id
         self.name = name
         self.idList = idList
-
+    
+    def get_idList(self):
+        return self.idList
 
 def get_trello_keys():
     
@@ -38,11 +40,7 @@ def get_trello_cards():
     trello_board_id = get_trello_board_id()
     response = requests.get(f'https://api.trello.com/1/boards/{trello_board_id}/cards?key={trello_auth_key[0]}&token={trello_auth_key[1]}')
 
-    card_list = []
-    for card in response.json():
-        existing_card = TrelloCard(card['id'], card['name'], card['idList'])
-
-        card_list.append(existing_card)
+    card_list = [TrelloCard(card['id'], card['name'], card['idList']) for card in response.json()]
 
     return card_list
 
@@ -50,10 +48,9 @@ def move_trello_card(card_id, new_list_id):
     trello_auth_key = get_trello_keys()
     requests.put(f'https://api.trello.com/1/cards/{card_id}?key={trello_auth_key[0]}&token={trello_auth_key[1]}&idList={new_list_id}')
 
-def create_trello_card(card_name):
+def create_trello_card(new_card):
     trello_auth_key = get_trello_keys()
-    trello_list_id = get_trello_list_id("To Do")
-    requests.post(f'https://api.trello.com/1/cards/?key={trello_auth_key[0]}&token={trello_auth_key[1]}&idList={trello_list_id}&name={card_name}')
+    requests.post(f'https://api.trello.com/1/cards/?key={trello_auth_key[0]}&token={trello_auth_key[1]}&idList={new_card.idList}&name={new_card.name}')
 
 def archive_trello_card(card_id):
     trello_auth_key = get_trello_keys()
