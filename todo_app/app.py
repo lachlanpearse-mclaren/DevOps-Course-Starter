@@ -1,8 +1,9 @@
 from flask import Flask
 from flask import render_template, request, redirect
-from operator import itemgetter
+from requests import NullHandler
 from todo_app.data.trello_api import TrelloCard, archive_trello_card, get_trello_cards, get_trello_list_id, move_trello_card, create_trello_card
 from todo_app.flask_config import Config
+import datetime
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -27,7 +28,14 @@ def index():
 def new_item():
     new_item_title = request.form.get('new_item_title')
     trello_default_list = get_trello_list_id('To Do')
-    new_card = TrelloCard(0, new_item_title, trello_default_list)
+    if request.form.get('due_date'):
+        due_date = datetime.datetime.strptime(request.form.get('due_date'), '%d-%m-%Y')
+    else:
+        due_date = datetime.date.today() + datetime.timedelta(30)
+    
+    description = ""
+
+    new_card = TrelloCard(0, new_item_title, trello_default_list, due_date, description)
     create_trello_card(new_card)
     return redirect(request.headers.get('Referer'))
 
