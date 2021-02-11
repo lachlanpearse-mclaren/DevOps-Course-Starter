@@ -11,6 +11,9 @@ class TrelloCard:
     
     def get_date_string(self):
         return datetime.datetime.strftime(self.due_date, '%Y-%m-%d')
+    
+    def get_user_facing_date(self):
+        return datetime.datetime.strftime(self.due_date, '%d/%m/%Y')
 
 def get_trello_keys():
     
@@ -42,8 +45,17 @@ def get_trello_cards():
     trello_board_id = get_trello_board_id()
     response = requests.get(f'https://api.trello.com/1/boards/{trello_board_id}/cards?key={trello_auth_key[0]}&token={trello_auth_key[1]}')
 
-    card_list = [TrelloCard(card['id'], card['name'], card['idList'], datetime.datetime.strptime(card['due'], '%Y-%m-%dT%H:%M:%S.%fZ'), card['desc']) for card in response.json()]
+    #card_list = [TrelloCard(card['id'], card['name'], card['idList'], datetime.datetime.strptime(card['due'], '%Y-%m-%dT%H:%M:%S.%fZ'), card['desc']) for card in response.json()]
+    card_list = []
+    for card in response.json():
+        if card['due'] == None:
+            due_date = datetime.datetime.strftime(datetime.datetime.today() + datetime.timedelta(365), '%Y-%m-%dT%H:%M:%S.%fZ')
 
+        else:
+            due_date = card['due']
+
+        card_list.append(TrelloCard(card['id'], card['name'], card['idList'], datetime.datetime.strptime(due_date, '%Y-%m-%dT%H:%M:%S.%fZ'), card['desc']))
+        
     return card_list
 
 def move_trello_card(card_id, new_list_id):

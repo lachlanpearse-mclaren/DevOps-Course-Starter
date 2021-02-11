@@ -31,7 +31,7 @@
         <tr scope="row">
           <td>{{ item.name }}</td>
           <td>{{ item.description }}</td>
-          <td>{{ item.due_date.strftime('%d-%m-%Y') }}</td>
+          <td>{{ item.get_user_facing_date() }}</td>
             {% if trello_list_ids.todo == item.idList %}
               <td>To Do</td>
             {% elif trello_list_ids.doing == item.idList %}
