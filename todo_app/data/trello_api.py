@@ -1,15 +1,31 @@
-import requests
+import requests, os, datetime
+
+class TrelloCard:
+
+    def __init__(self, id, name, idList, due_date, description):
+        self.id = id
+        self.name = name
+        self.idList = idList
+        self.due_date = due_date
+        self.description = description
+    
+    def get_date_string(self):
+        return datetime.datetime.strftime(self.due_date, '%Y-%m-%d')
+    
+    def get_user_facing_date(self):
+        return datetime.datetime.strftime(self.due_date, '%d/%m/%Y')
 
 def get_trello_keys():
-    with open('./todo_app/data/trello_key.txt','r') as f:
-        f.seek(0)
-        key_line = f.readline()
-        auth_keys = key_line.split(',',1)
+    
+    auth_keys = []
+    auth_keys.append(os.getenv('TRELLO_AUTH'))
+    auth_keys.append(os.getenv('TRELLO_TOKEN'))
         
-        return auth_keys
+    return auth_keys
 
 def get_trello_board_id():
-    return '600ede7caeb0c67b818ec912'
+    board_id = os.getenv('TRELLO_BOARD_ID')
+    return board_id
 
 def get_trello_list_id(list_name):
     trello_auth_key = get_trello_keys()
@@ -29,18 +45,27 @@ def get_trello_cards():
     trello_board_id = get_trello_board_id()
     response = requests.get(f'https://api.trello.com/1/boards/{trello_board_id}/cards?key={trello_auth_key[0]}&token={trello_auth_key[1]}')
 
-    return response.json()
+    #card_list = [TrelloCard(card['id'], card['name'], card['idList'], datetime.datetime.strptime(card['due'], '%Y-%m-%dT%H:%M:%S.%fZ'), card['desc']) for card in response.json()]
+    card_list = []
+    for card in response.json():
+        if card['due'] == None:
+            due_date = datetime.datetime.strftime(datetime.datetime.today() + datetime.timedelta(365), '%Y-%m-%dT%H:%M:%S.%fZ')
+
+        else:
+            due_date = card['due']
+
+        card_list.append(TrelloCard(card['id'], card['name'], card['idList'], datetime.datetime.strptime(due_date, '%Y-%m-%dT%H:%M:%S.%fZ'), card['desc']))
+        
+    return card_list
 
 def move_trello_card(card_id, new_list_id):
     trello_auth_key = get_trello_keys()
-    response = requests.put(f'https://api.trello.com/1/cards/{card_id}?key={trello_auth_key[0]}&token={trello_auth_key[1]}&idList={new_list_id}')
+    requests.put(f'https://api.trello.com/1/cards/{card_id}?key={trello_auth_key[0]}&token={trello_auth_key[1]}&idList={new_list_id}')
 
-def create_trello_card(card_name):
+def create_trello_card(new_card):
     trello_auth_key = get_trello_keys()
-    trello_list_id = get_trello_list_id("To Do")
-
-    response = requests.post(f'https://api.trello.com/1/cards/?key={trello_auth_key[0]}&token={trello_auth_key[1]}&idList={trello_list_id}&name={card_name}')
+    requests.post(f'https://api.trello.com/1/cards/?key={trello_auth_key[0]}&token={trello_auth_key[1]}&idList={new_card.idList}&name={new_card.name}&desc={new_card.description}&due={new_card.get_date_string()}')
 
 def archive_trello_card(card_id):
     trello_auth_key = get_trello_keys()
-    response = requests.put(f'https://api.trello.com/1/cards/{card_id}?key={trello_auth_key[0]}&token={trello_auth_key[1]}&closed=true')
+    requests.put(f'https://api.trello.com/1/cards/{card_id}?key={trello_auth_key[0]}&token={trello_auth_key[1]}&closed=true')

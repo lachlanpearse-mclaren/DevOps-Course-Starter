@@ -14,6 +14,8 @@
         <thead>
           <tr>
             <th scope="col"><strong>Task</strong></th>
+            <th scope="col"><strong>Description</strong></th>
+            <th scopt="col"><strong>Due Date</strong></th>
             {% if request.values.get('sort') == None %}
             <th scope="col"><strong><a href="/?sort=2" class="table">Status</a></strong></th>
             {% elif request.values.get('sort') == '2' %}
@@ -28,6 +30,8 @@
         {% for item in items %}
         <tr scope="row">
           <td>{{ item.name }}</td>
+          <td>{{ item.description }}</td>
+          <td>{{ item.get_user_facing_date() }}</td>
             {% if trello_list_ids.todo == item.idList %}
               <td>To Do</td>
             {% elif trello_list_ids.doing == item.idList %}
@@ -37,13 +41,14 @@
             {% endif %}
           <td class="form-inline">
               <form id="toggle_item_{{ item.id }}" action="/toggle_status" method="POST" class="form-inline">
-                  <select id="new_trello_list_id" name="new_trello_list_id" class="form-control form-control-sm mx-2" onchange="document.getElementById('toggle_item_{{ item.id}}').submit()">
+                  <select id="new_trello_list_id_{{ item.id }}" name="new_trello_list_id" class="form-control form-control-sm mx-2">
                     <option value="default">-- Status --</option>
                     <option value="{{ trello_list_ids.todo}}">To Do</option>
                     <option value="{{ trello_list_ids.doing}}">Doing</option>
                     <option value="{{ trello_list_ids.done}}">Done</option>
                   </select>
-                  <input type="hidden" name="toggle_item_id" value="{{ item.id }}">                
+                  <input type="hidden" name="toggle_item_id" value="{{ item.id }}">
+                  <input type="button" class="btn btn-primary btn-sm" value="Update" onclick="if(document.getElementById('new_trello_list_id_{{ item.id }}').options[document.getElementById('new_trello_list_id_{{ item.id }}').selectedIndex].value == 'default'){window.alert('You must select a status to change to!')}else{document.getElementById('toggle_item_{{ item.id }}').submit()}">                
               </form>
 
             <form id="archive_item_{{ item.id }}" action="/archive_item" method="POST" class="form-inline">
@@ -58,11 +63,36 @@
       <a href="/">Clear Sort</a>
       <br />
       <br />
-      <form action="/new_item" method="POST">
-        Add New Item: <input type="text" name="new_item_title" class="input"> 
+      <form action="/new_item" method="POST" class="form">
+        <strong>Add New Item</strong><br /><br />
+        <table class="table-sm">
+          <tr>
+            <td class="align-top">Title:</td>
+            <td>
+              <input type="text" name="new_item_title" class="form-inline" required>
+              <small id="nameHelpInline" class="text-muted">Required</small>
+            </td>
+          </tr>
+          <tr>
+            <td class="align-top">Description:</td>
+            <td>
+              <textarea name="new_item_desc" class="form-inline"></textarea>
+              <small id="descHelpInline" class="text-muted">Optional</small>
+            </td>
+          </tr>
+          <tr>
+            <td class="align-top">Due Date:</td>
+            <td>
+              <input type="date" name="new_item_due" class="form-inline">
+              <small id="dateHelpInline" class="text-muted">Optional</small>
+            </td>
+          </tr>
+        </table>
+        <br />
         <input type="submit" class="button">
       </form>
-
+      <br />
+      <br />
     </div>
   </div>
 
