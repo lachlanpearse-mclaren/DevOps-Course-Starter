@@ -32,7 +32,7 @@ class ViewModel:
     def todo_items(self):
         items = []
         for item in self._items:
-            if item['idList'] == self.trello_list_ids['todo']:
+            if item.idList == self.trello_list_ids['todo']:
                 items.append(item)
         return items
 
