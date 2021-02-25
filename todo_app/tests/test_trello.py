@@ -39,9 +39,9 @@ class TestTrello:
         todo_list_id = trello_list_ids['doing']
         view_model = ViewModel(card_list, trello_list_ids)
 
-        todo_items = view_model.todo_items
+        doing_items = view_model.doing_items
 
-        for i in todo_items:
+        for i in doing_items:
             assert todo_list_id == i.idList
     
     @staticmethod
@@ -50,9 +50,9 @@ class TestTrello:
         todo_list_id = trello_list_ids['done']
         view_model = ViewModel(card_list, trello_list_ids)
 
-        todo_items = view_model.todo_items
+        done_items = view_model.done_items
 
-        for i in todo_items:
+        for i in done_items:
             assert todo_list_id == i.idList
 
         
