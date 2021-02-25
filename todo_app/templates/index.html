@@ -9,7 +9,7 @@
 
   <div class="row">
     <div class="col-md-12">
-      <h2>To Do List</h2>
+      <h3>To Do List</h3>
       <table class="table table-hover table-sm">
         <thead>
           <tr>
@@ -27,7 +27,7 @@
           </tr>
       </thead>
       <tbody>
-        {% for item in view_model.items %}
+        {% for item in view_model.todo_items %}
         <tr scope="row">
           <td>{{ item.name }}</td>
           <td>{{ item.description }}</td>
@@ -60,7 +60,110 @@
         {% endfor %}
       </tbody>
       </table>
-      <a href="/">Clear Sort</a>
+
+      <h3>Items in Progress</h3>
+      <table class="table table-hover table-sm">
+        <thead>
+          <tr>
+            <th scope="col"><strong>Task</strong></th>
+            <th scope="col"><strong>Description</strong></th>
+            <th scopt="col"><strong>Due Date</strong></th>
+            {% if request.values.get('sort') == None %}
+            <th scope="col"><strong><a href="/?sort=2" class="table">Status</a></strong></th>
+            {% elif request.values.get('sort') == '2' %}
+            <th scope="col"><strong><a href="/?sort=1" class="table">Status</a> &circ;</strong></th>
+            {% elif request.values.get('sort') == '1' %}
+            <th scope="col"><strong><a href="/?sort=2" class="table">Status</a> &caron;</strong></th>
+            {% endif %}
+            <th scope="col"><strong>Actions</strong></td>
+          </tr>
+      </thead>
+      <tbody>
+        {% for item in view_model.doing_items %}
+        <tr scope="row">
+          <td>{{ item.name }}</td>
+          <td>{{ item.description }}</td>
+          <td>{{ item.get_user_facing_date() }}</td>
+            {% if view_model.trello_list_ids.todo == item.idList %}
+              <td>To Do</td>
+            {% elif view_model.trello_list_ids.doing == item.idList %}
+              <td>Doing</td>
+            {% elif view_model.trello_list_ids.done == item.idList %}
+              <td>Done</td>
+            {% endif %}
+          <td class="form-inline">
+              <form id="toggle_item_{{ item.id }}" action="/toggle_status" method="POST" class="form-inline">
+                  <select id="new_trello_list_id_{{ item.id }}" name="new_trello_list_id" class="form-control form-control-sm mx-2">
+                    <option value="default">-- Status --</option>
+                    <option value="{{ view_model.trello_list_ids.todo}}">To Do</option>
+                    <option value="{{ view_model.trello_list_ids.doing}}">Doing</option>
+                    <option value="{{ view_model.trello_list_ids.done}}">Done</option>
+                  </select>
+                  <input type="hidden" name="toggle_item_id" value="{{ item.id }}">
+                  <input type="button" class="btn btn-primary btn-sm" value="Update" onclick="if(document.getElementById('new_trello_list_id_{{ item.id }}').options[document.getElementById('new_trello_list_id_{{ item.id }}').selectedIndex].value == 'default'){window.alert('You must select a status to change to!')}else{document.getElementById('toggle_item_{{ item.id }}').submit()}">                
+              </form>
+
+            <form id="archive_item_{{ item.id }}" action="/archive_item" method="POST" class="form-inline">
+                <input type="hidden" name="archive_item_id" value="{{ item.id }}">
+                 <input type="submit" value="Archive" class="btn btn-link btn-sm mx-2">
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      </table>
+
+      <h3>Completed Items</h3>
+      <table class="table table-hover table-sm">
+        <thead>
+          <tr>
+            <th scope="col"><strong>Task</strong></th>
+            <th scope="col"><strong>Description</strong></th>
+            <th scopt="col"><strong>Due Date</strong></th>
+            {% if request.values.get('sort') == None %}
+            <th scope="col"><strong><a href="/?sort=2" class="table">Status</a></strong></th>
+            {% elif request.values.get('sort') == '2' %}
+            <th scope="col"><strong><a href="/?sort=1" class="table">Status</a> &circ;</strong></th>
+            {% elif request.values.get('sort') == '1' %}
+            <th scope="col"><strong><a href="/?sort=2" class="table">Status</a> &caron;</strong></th>
+            {% endif %}
+            <th scope="col"><strong>Actions</strong></td>
+          </tr>
+      </thead>
+      <tbody>
+        {% for item in view_model.done_items %}
+        <tr scope="row">
+          <td>{{ item.name }}</td>
+          <td>{{ item.description }}</td>
+          <td>{{ item.get_user_facing_date() }}</td>
+            {% if view_model.trello_list_ids.todo == item.idList %}
+              <td>To Do</td>
+            {% elif view_model.trello_list_ids.doing == item.idList %}
+              <td>Doing</td>
+            {% elif view_model.trello_list_ids.done == item.idList %}
+              <td>Done</td>
+            {% endif %}
+          <td class="form-inline">
+              <form id="toggle_item_{{ item.id }}" action="/toggle_status" method="POST" class="form-inline">
+                  <select id="new_trello_list_id_{{ item.id }}" name="new_trello_list_id" class="form-control form-control-sm mx-2">
+                    <option value="default">-- Status --</option>
+                    <option value="{{ view_model.trello_list_ids.todo}}">To Do</option>
+                    <option value="{{ view_model.trello_list_ids.doing}}">Doing</option>
+                    <option value="{{ view_model.trello_list_ids.done}}">Done</option>
+                  </select>
+                  <input type="hidden" name="toggle_item_id" value="{{ item.id }}">
+                  <input type="button" class="btn btn-primary btn-sm" value="Update" onclick="if(document.getElementById('new_trello_list_id_{{ item.id }}').options[document.getElementById('new_trello_list_id_{{ item.id }}').selectedIndex].value == 'default'){window.alert('You must select a status to change to!')}else{document.getElementById('toggle_item_{{ item.id }}').submit()}">                
+              </form>
+
+            <form id="archive_item_{{ item.id }}" action="/archive_item" method="POST" class="form-inline">
+                <input type="hidden" name="archive_item_id" value="{{ item.id }}">
+                 <input type="submit" value="Archive" class="btn btn-link btn-sm mx-2">
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      </table>
       <br />
       <br />
       <form action="/new_item" method="POST" class="form">

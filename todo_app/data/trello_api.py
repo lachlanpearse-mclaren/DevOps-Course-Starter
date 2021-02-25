@@ -2,17 +2,24 @@ import requests, os, datetime, json
 
 class TrelloCard:
 
-    def __init__(self, id, name, idList, due_date, description):
+    def __init__(self, id, name, idList, due_date, description, modified):
         self.id = id
         self.name = name
         self.idList = idList
         self.due_date = due_date
         self.description = description
+        self.modified = modified
     
     def get_date_string(self):
         return datetime.datetime.strftime(self.due_date, '%Y-%m-%d')
     
     def get_user_facing_date(self):
+        return datetime.datetime.strftime(self.due_date, '%d/%m/%Y')
+
+    def get_modified_date_string(self):
+        return datetime.datetime.strftime(self.due_date, '%Y-%m-%d')
+    
+    def get_modified_user_facing_date(self):
         return datetime.datetime.strftime(self.due_date, '%d/%m/%Y')
 
 class ViewModel:
@@ -91,7 +98,7 @@ def get_trello_cards():
         else:
             due_date = card['due']
 
-        card_list.append(TrelloCard(card['id'], card['name'], card['idList'], datetime.datetime.strptime(due_date, '%Y-%m-%dT%H:%M:%S.%fZ'), card['desc']))
+        card_list.append(TrelloCard(card['id'], card['name'], card['idList'], datetime.datetime.strptime(due_date, '%Y-%m-%dT%H:%M:%S.%fZ'), card['desc'], datetime.datetime.strptime(card['dateLastActivity'], '%Y-%m-%dT%H:%M:%S.%fZ')))
         
     return card_list
 
