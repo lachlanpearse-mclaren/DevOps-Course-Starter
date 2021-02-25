@@ -32,5 +32,27 @@ class TestTrello:
 
         for i in todo_items:
             assert todo_list_id == i.idList
-            
+        
+    @staticmethod
+    def test_get_doing(card_list,trello_list_ids):        
+
+        todo_list_id = trello_list_ids['doing']
+        view_model = ViewModel(card_list, trello_list_ids)
+
+        todo_items = view_model.todo_items
+
+        for i in todo_items:
+            assert todo_list_id == i.idList
+    
+    @staticmethod
+    def test_get_done(card_list,trello_list_ids):        
+
+        todo_list_id = trello_list_ids['done']
+        view_model = ViewModel(card_list, trello_list_ids)
+
+        todo_items = view_model.todo_items
+
+        for i in todo_items:
+            assert todo_list_id == i.idList
+
         
