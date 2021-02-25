@@ -7,6 +7,18 @@ import datetime
 app = Flask(__name__)
 app.config.from_object(Config)
 
+class ViewModel:
+    def __init__(self, items, trello_list_ids):
+        self._items = items
+        self._trello_list_ids = trello_list_ids
+
+    @property
+    def items(self):
+        return self._items
+
+    @property
+    def trello_list_ids(self):
+        return self._trello_list_ids
 
 @app.route('/')
 def index():
@@ -15,12 +27,14 @@ def index():
 
     items = get_trello_cards()
 
+    item_view_model = ViewModel(items, trello_list_ids)
+
     if request.values.get('sort') == '1':
         items.sort(key=lambda x: x.idList)
     elif request.values.get('sort') == '2':
         items.sort(key=lambda x: x.idList, reverse=True)
 
-    return render_template('index.html', items=items,trello_list_ids=trello_list_ids)
+    return render_template('index.html', view_model=item_view_model)
 
 
 @app.route('/new_item', methods=['POST'])
