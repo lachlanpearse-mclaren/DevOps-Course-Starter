@@ -14,6 +14,14 @@ To configure this application to work with Trello's API, you need to update the 
 
 Also ensure your board specified above contains three lists: "To Do", "Doing" and "Done". 
 
+### Unit Test Configuration
+
+To run the unit tests, you will require pytest to be installed. in the todo_app/tests/test_trello.py file, you will see the suite of tests.
+
+Inside the test_trelly.py, you can create a card_list list containing a number of TrelloCard objects, along with a trello_list_ids dictionary with the
+ID of each list used in the app for doing, todo, and done list.
+
+
 ### Poetry installation (Bash)
 
 ```bash
