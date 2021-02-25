@@ -35,6 +35,22 @@ class ViewModel:
             if item.idList == self.trello_list_ids['todo']:
                 items.append(item)
         return items
+    
+    @property
+    def doing_items(self):
+        items = []
+        for item in self._items:
+            if item.idList == self.trello_list_ids['doing']:
+                items.append(item)
+        return items
+    
+    @property
+    def done_items(self):
+        items = []
+        for item in self._items:
+            if item.idList == self.trello_list_ids['done']:
+                items.append(item)
+        return items
 
 def get_trello_keys():
     
