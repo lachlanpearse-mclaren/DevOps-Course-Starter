@@ -59,6 +59,22 @@ class ViewModel:
                 items.append(item)
         return items
 
+    @property
+    def recent_done_items(self):
+        items = []
+        for item in self._items:
+            if item.idList == self.trello_list_ids['done'] and item.modified == datetime.date.today():
+                items.append(item)
+        return items
+
+    @property
+    def older_done_items(self):
+        items = []
+        for item in self._items:
+            if item.idList == self.trello_list_ids['done'] and item.modified != datetime.date.today():
+                items.append(item)
+        return items
+
 def get_trello_keys():
     
     auth_keys = []
@@ -98,7 +114,7 @@ def get_trello_cards():
         else:
             due_date = card['due']
 
-        card_list.append(TrelloCard(card['id'], card['name'], card['idList'], datetime.datetime.strptime(due_date, '%Y-%m-%dT%H:%M:%S.%fZ'), card['desc'], datetime.datetime.strptime(card['dateLastActivity'], '%Y-%m-%dT%H:%M:%S.%fZ')))
+        card_list.append(TrelloCard(card['id'], card['name'], card['idList'], datetime.datetime.strptime(due_date, '%Y-%m-%dT%H:%M:%S.%fZ'), card['desc'], datetime.datetime.strptime(card['dateLastActivity'], '%Y-%m-%dT%H:%M:%S.%fZ').date()))
         
     return card_list
 
