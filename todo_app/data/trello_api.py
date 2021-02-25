@@ -1,4 +1,4 @@
-import requests, os, datetime
+import requests, os, datetime, json
 
 class TrelloCard:
 
@@ -14,6 +14,27 @@ class TrelloCard:
     
     def get_user_facing_date(self):
         return datetime.datetime.strftime(self.due_date, '%d/%m/%Y')
+
+class ViewModel:
+    def __init__(self, items, trello_list_ids):
+        self._items = items
+        self._trello_list_ids = trello_list_ids
+
+    @property
+    def items(self):
+        return self._items
+
+    @property
+    def trello_list_ids(self):
+        return self._trello_list_ids
+
+    @property
+    def todo_items(self):
+        items = []
+        for item in self._items:
+            if item['idList'] == self.trello_list_ids['todo']:
+                items.append(item)
+        return items
 
 def get_trello_keys():
     
