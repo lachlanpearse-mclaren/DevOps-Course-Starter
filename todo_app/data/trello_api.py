@@ -17,10 +17,10 @@ class TrelloCard:
         return datetime.datetime.strftime(self.due_date, '%d/%m/%Y')
 
     def get_modified_date_string(self):
-        return datetime.datetime.strftime(self.due_date, '%Y-%m-%d')
+        return datetime.datetime.strftime(self.modified, '%Y-%m-%d')
     
     def get_modified_user_facing_date(self):
-        return datetime.datetime.strftime(self.due_date, '%d/%m/%Y')
+        return datetime.datetime.strftime(self.modified, '%d/%m/%Y')
 
 class ViewModel:
     def __init__(self, items, trello_list_ids):

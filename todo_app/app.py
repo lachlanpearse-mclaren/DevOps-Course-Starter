@@ -1,14 +1,11 @@
 from flask import Flask
 from flask import render_template, request, redirect
 from todo_app.data.trello_api import TrelloCard, ViewModel, archive_trello_card, get_trello_cards, get_trello_list_id, move_trello_card, create_trello_card
-from todo_app.flask_config import Config
-import datetime
+import datetime,pytest
 
 def create_app():
 
     app = Flask(__name__)
-    app.config.from_object(Config)
-
 
     @app.route('/')
     def index():
@@ -19,12 +16,14 @@ def create_app():
 
         item_view_model = ViewModel(items, trello_list_ids)
 
+        todays_date = datetime.datetime.strftime(datetime.date.today(), '%d/%m/%Y')
+
         if request.values.get('sort') == '1':
             items.sort(key=lambda x: x.idList)
         elif request.values.get('sort') == '2':
             items.sort(key=lambda x: x.idList, reverse=True)
 
-        return render_template('index.html', view_model=item_view_model)
+        return render_template('index.html', view_model=item_view_model, todays_date=todays_date)
 
 
     @app.route('/new_item', methods=['POST'])
@@ -63,3 +62,5 @@ def create_app():
         app.run()
     
     return app
+
+

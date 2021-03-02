@@ -114,6 +114,11 @@
       </table>
 
       <h3>Completed Items</h3>
+      {% if view_model.done_items|length >= 5 %}
+      <br />
+      <div><button class="btn btn-primary btn-sm" type="button" data-toggle="collapse" data-target="#completedOlder" aria-controls="completedOlder">Show/Hide Older Tasks</button></div>
+      <br />
+      {% endif %}
       <table class="table table-hover table-sm">
         <thead>
           <tr>
@@ -132,7 +137,15 @@
       </thead>
       <tbody>
         {% for item in view_model.done_items %}
-        <tr scope="row">
+        {% if view_model.done_items|length >= 5 %}
+          {% if item.get_modified_user_facing_date() == todays_date %}
+          <tr scope="row" class="collapse show" id="completedToday">
+          {% else %}
+          <tr scope="row" class="collapse" id="completedOlder">
+          {% endif %}
+        {% else %}
+          <tr scope="row">
+        {% endif %}
           <td>{{ item.name }}</td>
           <td>{{ item.description }}</td>
           <td>{{ item.get_user_facing_date() }}</td>
