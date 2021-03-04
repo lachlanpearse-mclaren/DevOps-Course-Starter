@@ -32,7 +32,7 @@ def mock_get_lists(url, params):
                 "closed": False,
                 "pos": 16384,
                 "softLimit": None,
-                "idBoard": "600ede7caeb0c67b818ec912",
+                "idBoard": trello_board_id,
                 "subscribed": False
             },
             {
@@ -41,7 +41,7 @@ def mock_get_lists(url, params):
                 "closed": False,
                 "pos": 32768,
                 "softLimit": None,
-                "idBoard": "600ede7caeb0c67b818ec912",
+                "idBoard": trello_board_id,
                 "subscribed": False
             },
             {
@@ -50,7 +50,7 @@ def mock_get_lists(url, params):
                 "closed": False,
                 "pos": 49152,
                 "softLimit": None,
-                "idBoard": "600ede7caeb0c67b818ec912",
+                "idBoard": trello_board_id,
                 "subscribed": False
             }
         ]
