@@ -32,13 +32,7 @@
           <td>{{ item.name }}</td>
           <td>{{ item.description }}</td>
           <td>{{ item.get_user_facing_date() }}</td>
-            {% if view_model.trello_list_ids.todo == item.idList %}
-              <td>To Do</td>
-            {% elif view_model.trello_list_ids.doing == item.idList %}
-              <td>Doing</td>
-            {% elif view_model.trello_list_ids.done == item.idList %}
-              <td>Done</td>
-            {% endif %}
+          <td id="Todo_{{ item.id }}">To Do</td>          
           <td class="form-inline">
               <form id="toggle_item_{{ item.id }}" action="/toggle_status" method="POST" class="form-inline">
                   <select id="new_trello_list_id_{{ item.id }}" name="new_trello_list_id" class="form-control form-control-sm mx-2">
@@ -84,13 +78,7 @@
           <td>{{ item.name }}</td>
           <td>{{ item.description }}</td>
           <td>{{ item.get_user_facing_date() }}</td>
-            {% if view_model.trello_list_ids.todo == item.idList %}
-              <td>To Do</td>
-            {% elif view_model.trello_list_ids.doing == item.idList %}
-              <td>Doing</td>
-            {% elif view_model.trello_list_ids.done == item.idList %}
-              <td>Done</td>
-            {% endif %}
+          <td id="Doing_{{ item.id }}">Doing</td>
           <td class="form-inline">
               <form id="toggle_item_{{ item.id }}" action="/toggle_status" method="POST" class="form-inline">
                   <select id="new_trello_list_id_{{ item.id }}" name="new_trello_list_id" class="form-control form-control-sm mx-2">
@@ -149,13 +137,7 @@
           <td>{{ item.name }}</td>
           <td>{{ item.description }}</td>
           <td>{{ item.get_user_facing_date() }}</td>
-            {% if view_model.trello_list_ids.todo == item.idList %}
-              <td>To Do</td>
-            {% elif view_model.trello_list_ids.doing == item.idList %}
-              <td>Doing</td>
-            {% elif view_model.trello_list_ids.done == item.idList %}
-              <td>Done</td>
-            {% endif %}
+          <td id="Done_{{ item.id }}">Done</td>
           <td class="form-inline">
               <form id="toggle_item_{{ item.id }}" action="/toggle_status" method="POST" class="form-inline">
                   <select id="new_trello_list_id_{{ item.id }}" name="new_trello_list_id" class="form-control form-control-sm mx-2">
