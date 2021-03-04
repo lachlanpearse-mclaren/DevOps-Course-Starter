@@ -129,3 +129,13 @@ def create_trello_card(new_card):
 def archive_trello_card(card_id):
     trello_auth_key = get_trello_keys()
     requests.put(f'https://api.trello.com/1/cards/{card_id}?key={trello_auth_key[0]}&token={trello_auth_key[1]}&closed=true')
+
+def create_trello_board(board_name):
+    trello_auth_key = get_trello_keys()
+    response = requests.post(f'https://api.trello.com/1/boards/?key={trello_auth_key[0]}&token={trello_auth_key[1]}&name={board_name}')
+    newBoard = response.json()
+    return newBoard['id']
+
+def delete_trello_board(board_id):
+    trello_auth_key = get_trello_keys()
+    requests.delete(f'https://api.trello.com/1/boards/{board_id}/?key={trello_auth_key[0]}&token={trello_auth_key[1]}')
