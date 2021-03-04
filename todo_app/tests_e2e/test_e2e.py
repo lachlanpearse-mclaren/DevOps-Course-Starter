@@ -38,9 +38,14 @@ def test_task_journey(driver,app_with_temp_board):
     driver.find_element_by_id('new_item_desc').send_keys('This is a description for the test item to see if it creates ok')
     driver.find_element_by_id('new_item_submit').click()
 
-    
+    assert driver.find_element_by_xpath("//*[starts-with(@id, 'Todo')]")
 
-    assert 'Test Item Name' in driver.page_source
+    select = driver.find_element_by_xpath("//*[starts-with(@id, 'new_trello_list_id_')]")
+    select.select_by_index(2)
+    driver.find_element_by_xpath("//*[starts-with(@id, 'toggle_item_button_')]").click()
+    
+    assert driver.find_element_by_xpath("//*[starts-with(@id, 'Doing')]")
+
 
 
 
