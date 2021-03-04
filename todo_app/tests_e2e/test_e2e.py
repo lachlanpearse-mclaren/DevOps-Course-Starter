@@ -33,3 +33,14 @@ def test_task_journey(driver,app_with_temp_board):
     driver.get('http://127.0.0.1:5000')
 
     assert driver.title == 'To-Do App'
+
+    driver.find_element_by_id('new_item_title').send_keys('Test Item Name')
+    driver.find_element_by_id('new_item_desc').send_keys('This is a description for the test item to see if it creates ok')
+    driver.find_element_by_id('new_item_submit').click()
+
+    driver.get('http://127.0.0.1:5000')
+
+    assert 'Test Item Name' in driver.page_source
+
+
+
