@@ -3,11 +3,15 @@ from threading import Thread
 from todo_app.data.trello_api import create_trello_board,delete_trello_board
 from todo_app import app
 from selenium import webdriver
+from dotenv import find_dotenv,load_dotenv
 
 @pytest.fixture(scope='module')
 def app_with_temp_board():
     board_id = create_trello_board('TestBoard')
+    file_path = find_dotenv('.env')
+    load_dotenv(file_path)
     os.environ['TRELLO_BOARD_ID'] = board_id
+
 
     application = app.create_app()
 
