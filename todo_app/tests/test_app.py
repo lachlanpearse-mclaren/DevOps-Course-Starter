@@ -21,6 +21,9 @@ def test_index_page(mock_get_requests, client):
     mock_get_requests.side_effect = mock_get_trello
     response = client.get('/')
 
+    assert b'Coffee' in response.data
+    assert b'Cake time' in response.data
+    assert b'moo' in response.data
 
 def mock_get_trello(url):
     trello_board_id = os.getenv('TRELLO_BOARD_ID')
