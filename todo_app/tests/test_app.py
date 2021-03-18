@@ -3,7 +3,7 @@ import todo_app.app
 from dotenv import find_dotenv, load_dotenv
 from unittest.mock import patch,Mock
 
-trello_board_id = os.getenv('TRELLO_BOARD_ID')
+
 
 @pytest.fixture
 def client():
@@ -14,6 +14,8 @@ def client():
 
     with test_app.test_client() as client:
         yield client
+
+trello_board_id = os.getenv('TRELLO_BOARD_ID')
 
 @patch('requests.get')
 def test_index_page(mock_get_requests, client):
