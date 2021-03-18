@@ -10,7 +10,7 @@ from dotenv import find_dotenv,load_dotenv
 def app_with_temp_board():
     
     file_path = find_dotenv('.env')
-    load_dotenv(file_path)
+    load_dotenv(file_path, override=True)
     
     board_id = create_trello_board('TestBoard')
     os.environ['TRELLO_BOARD_ID'] = board_id
