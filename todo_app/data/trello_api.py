@@ -1,19 +1,79 @@
-import requests, os, datetime
+import requests, os, datetime, json
 
 class TrelloCard:
 
-    def __init__(self, id, name, idList, due_date, description):
+    def __init__(self, id, name, idList, due_date, description, modified):
         self.id = id
         self.name = name
         self.idList = idList
         self.due_date = due_date
         self.description = description
+        self.modified = modified
     
     def get_date_string(self):
         return datetime.datetime.strftime(self.due_date, '%Y-%m-%d')
     
     def get_user_facing_date(self):
         return datetime.datetime.strftime(self.due_date, '%d/%m/%Y')
+
+    def get_modified_date_string(self):
+        return datetime.datetime.strftime(self.modified, '%Y-%m-%d')
+    
+    def get_modified_user_facing_date(self):
+        return datetime.datetime.strftime(self.modified, '%d/%m/%Y')
+
+class ViewModel:
+    def __init__(self, items, trello_list_ids):
+        self._items = items
+        self._trello_list_ids = trello_list_ids
+
+    @property
+    def items(self):
+        return self._items
+
+    @property
+    def trello_list_ids(self):
+        return self._trello_list_ids
+
+    @property
+    def todo_items(self):
+        items = []
+        for item in self._items:
+            if item.idList == self.trello_list_ids['todo']:
+                items.append(item)
+        return items
+    
+    @property
+    def doing_items(self):
+        items = []
+        for item in self._items:
+            if item.idList == self.trello_list_ids['doing']:
+                items.append(item)
+        return items
+    
+    @property
+    def done_items(self):
+        items = []
+        for item in self._items:
+            if item.idList == self.trello_list_ids['done']:
+                items.append(item)
+        return items
+
+    @property
+    def recent_done_items(self):
+        items = []
+        for item in self._items:
+            if item.idList == self.trello_list_ids['done'] and item.modified == datetime.date.today():
+                items.append(item)
+        return items
+
+    @property
+    def older_done_items(self):
+        items = []
+        for item in self._items:
+            if item.idList == self.trello_list_ids['done'] and item.modified != datetime.date.today():
+                items.append(item)
+        return items
 
 def get_trello_keys():
     
@@ -54,7 +114,7 @@ def get_trello_cards():
         else:
             due_date = card['due']
 
-        card_list.append(TrelloCard(card['id'], card['name'], card['idList'], datetime.datetime.strptime(due_date, '%Y-%m-%dT%H:%M:%S.%fZ'), card['desc']))
+        card_list.append(TrelloCard(card['id'], card['name'], card['idList'], datetime.datetime.strptime(due_date, '%Y-%m-%dT%H:%M:%S.%fZ'), card['desc'], datetime.datetime.strptime(card['dateLastActivity'], '%Y-%m-%dT%H:%M:%S.%fZ').date()))
         
     return card_list
 
@@ -69,3 +129,13 @@ def create_trello_card(new_card):
 def archive_trello_card(card_id):
     trello_auth_key = get_trello_keys()
     requests.put(f'https://api.trello.com/1/cards/{card_id}?key={trello_auth_key[0]}&token={trello_auth_key[1]}&closed=true')
+
+def create_trello_board(board_name):
+    trello_auth_key = get_trello_keys()
+    response = requests.post(f'https://api.trello.com/1/boards/?key={trello_auth_key[0]}&token={trello_auth_key[1]}&name={board_name}')
+    newBoard = response.json()
+    return newBoard['id']
+
+def delete_trello_board(board_id):
+    trello_auth_key = get_trello_keys()
+    requests.delete(f'https://api.trello.com/1/boards/{board_id}/?key={trello_auth_key[0]}&token={trello_auth_key[1]}')

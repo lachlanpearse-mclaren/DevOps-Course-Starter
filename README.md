@@ -14,6 +14,14 @@ To configure this application to work with Trello's API, you need to update the 
 
 Also ensure your board specified above contains three lists: "To Do", "Doing" and "Done". 
 
+### Test Configuration
+
+To run the unit tests, you will require pytest to be installed. You will also require the chromedriver.exe binary in the root directory for
+the end to end tests to work.
+
+You can then run: "poetry run pytest" to execute all the currently defined tests. 
+
+
 ### Poetry installation (Bash)
 
 ```bash
