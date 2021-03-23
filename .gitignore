@@ -121,3 +121,4 @@ env/
 
 geckodriver.*
 chromedriver.exe
+.vagrant
