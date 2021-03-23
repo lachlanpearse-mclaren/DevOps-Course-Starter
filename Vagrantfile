@@ -19,10 +19,8 @@ Vagrant.configure("2") do |config|
         trigger.info = "Running the TODO app setup script"
         trigger.run_remote = {privileged: false, inline: "
         cd /vagrant
-        cp poetry.toml poetry.toml.old
-        sed -i 's/in-project = true/in-project = false/g' poetry.toml
         poetry install
-        nohup poetry run flask run --host 0.0.0.0 &
+        nohup poetry run flask run --host 0.0.0.0 > logs.txt 2>&1 &
         "}
     end
 end
