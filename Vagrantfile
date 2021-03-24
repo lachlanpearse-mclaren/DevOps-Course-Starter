@@ -19,11 +19,9 @@ Vagrant.configure("2") do |config|
     config.vm.provision "shell", privileged: false, inline: <<-SHELL 
         cd /vagrant
         poetry install
-    SHELL
-    config.vm.provision "shell", inline: <<-SHELL
-        cp /vagrant/gunicorn.service /etc/systemd/system
-        sed -i "s#VENV_PATH#$(poetry env info --path)#g" /etc/systemd/system/gunicorn.service
-        systemctl daemon-reload
+        sudo cp /vagrant/gunicorn.service /etc/systemd/system
+        sudo sed -i "s#VENV_PATH#$(poetry env info --path)#g" /etc/systemd/system/gunicorn.service
+        sudo systemctl daemon-reload
     SHELL
     config.trigger.after :up do |trigger|
         trigger.name = "Launching App"
