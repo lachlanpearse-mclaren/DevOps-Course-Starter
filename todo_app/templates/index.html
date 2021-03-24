@@ -137,7 +137,7 @@
                     <option value="{{ view_model.trello_list_ids.done}}">Done</option>
                   </select>
                   <input type="hidden" name="toggle_item_id" value="{{ item.id }}">
-                  <input type="button" id="toggle_item_button_{{ item.id}}" class="btn btn-primary btn-sm" value="Update" onclick="if(document.getElementById('new_trello_list_id_{{ item.id }}').options[document.getElementById('new_trello_list_id_{{ item.id }}').selectedIndex].value == 'default'){window.alert('You must select a status to change to!')}else{document.getElementById('toggle_item_{{ item.id }}').submit()}">                
+                  <input type="button" id="toggle_item_button_{{ item.id}}" class="btn btn-primary btn-sm" value="Update" onclick="if(document.getElementById('new_trello_list_id_{{ item.id }}').options[document.getElementById('new_trello_list_id_{{ item.id }}').selectedIndex].value == 'default'){window.alert('You must select a status to change to!')}else{document.getElementById('toggle_item_form_{{ item.id }}').submit()}">                
               </form>
 
             <form id="archive_item_{{ item.id }}" action="/archive_item" method="POST" class="form-inline">
