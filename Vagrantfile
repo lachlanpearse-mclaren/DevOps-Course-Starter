@@ -12,12 +12,13 @@ Vagrant.configure("2") do |config|
     config.vm.provision "shell", privileged: false, inline: <<-SHELL
         pyenv install 3.9.0
         pyenv global 3.9.0
-        curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python   
+        curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python 
+    SHELL
+    config.vm.provision "shell", privileged: false, inline: <<-SHELL 
         cd /vagrant
         poetry install
-        POETRY_ENV_PATH=$(poetry env info --path)
         sudo cp /vagrant/gunicorn.service /etc/systemd/system
-        sudo sed -i "s/VENV_PATH/$POETRY_ENV_PATH/g" /etc/systemd/system/gunicorn.service
+        sudo sed -i "s#VENV_PATH#$(poetry env info --path)#g" /etc/systemd/system/gunicorn.service
         sudo systemctl daemon-reload
     SHELL
     config.trigger.after :up do |trigger|
