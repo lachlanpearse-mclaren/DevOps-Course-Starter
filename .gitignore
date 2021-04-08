@@ -121,3 +121,8 @@ env/
 
 geckodriver.*
 chromedriver.exe
+.vagrant
+logs.txt
+nohup.out
+gunicorn*.log
+pytestdebug.log
