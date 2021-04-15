@@ -85,8 +85,6 @@ $ docker build --target development --tag todo-app:dev .
 $ docker build --target test --tag todo-app:test .
 ```
 
-Note: for the test environment, it's best to run that as part of the docker-compose.yml file for development/test due to certain prerequisites for the end to end tests.
-
 To start each environment, run the following commands:
 
 ```bash
@@ -94,6 +92,9 @@ $ docker run --env-file .env -p 5000:5000 todo-app:prod
 ```
 ```bash
 $ docker run --env-file .env -p 5000:5000 --mount type=bind,source=$(pwd)/todo_app,target=/app/todo_app todo-app:dev 
+```
+```bash
+$ docker run --env-file .env --mount type=bind,source=$(pwd)/todo_app,target=/app/todo_app todo-app:test 
 ```
 
 To start the full development/test suite, you can use docker-compose with the following command:

@@ -4,7 +4,6 @@ from todo_app.data.trello_api import create_trello_board,delete_trello_board
 from todo_app import app
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from dotenv import find_dotenv,load_dotenv
 
 @pytest.fixture(scope='module')
@@ -30,11 +29,15 @@ def app_with_temp_board():
 
 @pytest.fixture(scope="module")
 def driver():
-    with webdriver.Remote('http://chrome:4444/wd/hub', DesiredCapabilities.CHROME) as driver:
+    opts = webdriver.ChromeOptions()
+    opts.add_argument('--headless')
+    opts.add_argument('--no-sandbox')
+    opts.add_argument('--disable-dev-shm-usage')
+    with webdriver.Chrome(options=opts) as driver:
         yield driver
 
 def test_task_journey(driver,app_with_temp_board):
-    driver.get('http://todo-app:5000')
+    driver.get('http://127.0.0.1:5000')
 
     assert driver.title == 'To-Do App'
     
