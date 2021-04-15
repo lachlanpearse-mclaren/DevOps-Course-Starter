@@ -105,7 +105,7 @@ def get_trello_cards():
     trello_board_id = get_trello_board_id()
     response = requests.get(f'https://api.trello.com/1/boards/{trello_board_id}/cards?key={trello_auth_key[0]}&token={trello_auth_key[1]}')
 
-    #ca rd_list = [TrelloCard(card['id'], card['name'], card['idList'], datetime.datetime.strptime(card['due'], '%Y-%m-%dT%H:%M:%S.%fZ'), card['desc']) for card in response.json()]
+    #card_list = [TrelloCard(card['id'], card['name'], card['idList'], datetime.datetime.strptime(card['due'], '%Y-%m-%dT%H:%M:%S.%fZ'), card['desc']) for card in response.json()]
     card_list = []
     for card in response.json():
         if card['due'] == None:
