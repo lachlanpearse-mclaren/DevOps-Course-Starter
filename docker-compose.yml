@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  todo-app:
+    build: 
+        context: .
+        dockerfile: Dockerfile
+        target: development
+    ports:
+      - "8089:5000"
+    env_file:
+        - .env
+    volumes:
+        - type: bind
+          source: ./todo_app
+          target: /app/todo_app
+    
