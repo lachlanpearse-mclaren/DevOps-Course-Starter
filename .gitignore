@@ -119,8 +119,8 @@ env/
 ### Configuration files ###
 .env
 
-geckodriver.*
-chromedriver.exe
+geckodriver*
+chromedriver*
 .vagrant
 logs.txt
 nohup.out
