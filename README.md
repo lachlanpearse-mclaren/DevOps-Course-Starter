@@ -93,7 +93,7 @@ To start each environment, run the following commands:
 $ docker run --env-file .env -p 5000:5000 todo-app:prod 
 ```
 ```bash
-$ docker run --env-file .env -p 5000:5000 --mount type=bind,source=${pwd}/todo_app,target=/app/todo_app todo-app:dev 
+$ docker run --env-file .env -p 5000:5000 --mount type=bind,source=$(pwd)/todo_app,target=/app/todo_app todo-app:dev 
 ```
 
 To start the full development/test suite, you can use docker-compose with the following command:
