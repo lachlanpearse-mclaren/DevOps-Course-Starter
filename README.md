@@ -68,3 +68,36 @@ You should see output similar to the following:
  * Debugger PIN: 226-556-590
 ```
 Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app.
+
+## Running the App Within Containers
+
+Assuming Docker is installed already, the application can be started inside Docker containers. There is a three-stage Dockerfile included that allows for a production, development and test environment to be easily run. Follow the steps below to run each environment.
+
+To build each environment's image, run the following commands:
+
+```bash
+$ docker build --target production --tag todo-app:prod .
+```
+```bash
+$ docker build --target development --tag todo-app:dev .
+```
+```bash
+$ docker build --target test --tag todo-app:test .
+```
+
+Note: for the test environment, it's best to run that as part of the docker-compose.yml file for development/test due to certain prerequisites for the end to end tests.
+
+To start each environment, run the following commands:
+
+```bash
+$ docker run --env-file .env -p 5000:5000 todo-app:prod 
+```
+```bash
+$ docker run --env-file .env -p 5000:5000 --mount type=bind,source=${pwd}/todo_app,target=/app/todo_app todo-app:dev 
+```
+
+To start the full development/test suite, you can use docker-compose with the following command:
+```bash
+$ docker-compose up --build 
+```
+The test container will monitor for code changes and automatically re-run the test suite.
