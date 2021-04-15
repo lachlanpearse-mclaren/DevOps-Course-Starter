@@ -18,8 +18,7 @@ EXPOSE 5000
 ENTRYPOINT  poetry run flask run --host 0.0.0.0
 
 FROM base as test
-COPY ./chromedriver /app
-RUN chmod a+x /app/chromedriver && pip install pytest-watch
+RUN pip install pytest-watch
 ENV PATH=$PATH:/app
-EXPOSE 5000
+EXPOSE 4444
 ENTRYPOINT  poetry run ptw --poll

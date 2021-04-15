@@ -28,4 +28,13 @@ services:
         - type: bind
           source: ./todo_app
           target: /app/todo_app
+    depends_on: 
+      - chrome
+      - todo-app
+  
+  chrome:
+    image: selenium/standalone-chrome
+    ports:
+      - "4444:4444"
+
     
