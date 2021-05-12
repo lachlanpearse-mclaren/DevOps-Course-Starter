@@ -6,20 +6,18 @@ RUN pip install poetry && poetry install
 
 FROM base as production
 
-RUN apt-get update && \
-    apt-get install -y gunicorn 
 COPY ./todo_app /app/todo_app
 EXPOSE 5000
 ENTRYPOINT  $(poetry env info --path)/bin/gunicorn --error-logfile /app/gunicorn_error.log --access-logfile /app/gunicorn_access.log --bind 0.0.0.0:5000 "todo_app.app:create_app()"
 
 FROM base as development
 
+RUN poetry install
 EXPOSE 5000
 ENTRYPOINT  poetry run flask run --host 0.0.0.0
 
 FROM base as test
-RUN pip install pytest-watch
-RUN apt-get update && apt-get install wget gnupg unzip -y
+RUN poetry install && apt-get update && apt-get install wget gnupg unzip -y
 # Install Chrome
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
   && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
