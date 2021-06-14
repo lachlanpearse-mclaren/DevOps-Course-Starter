@@ -1,5 +1,4 @@
 script:
-- env
 - docker build --target test --tag todo-app:test .
 - docker run todo-app:test todo_app/tests/test_trello.py
 - docker run --env-file .env.test todo-app:test todo_app/tests/test_app.py
