@@ -1,4 +1,8 @@
-script:
-- docker build --target test --tag todo-app:test .
-- docker run todo-app:test todo_app/tests/test_trello.py
-- docker run --env-file .env.test todo-app:test todo_app/tests/test_app.py
+jobs:
+  include:
+    - stage: Build Docker Image
+      script: docker build --target test --tag todo-app:test .
+    - stage: Unit Tests
+      script: docker run todo-app:test todo_app/tests/test_trello.py
+    - stage: Integration Tests
+      script: docker run --env-file .env.test todo-app:test todo_app/tests/test_app.py
