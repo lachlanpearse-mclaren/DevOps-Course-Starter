@@ -41,4 +41,5 @@ RUN CHROME_MAJOR_VERSION=$(google-chrome --version | sed -E "s/.* ([0-9]+)(\.[0-
   && ln -fs /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION /usr/bin/chromedriver
 ENV PATH=$PATH:/app
 EXPOSE 4444
-ENTRYPOINT  poetry run pytest
+ENTRYPOINT  ["poetry", "run", "pytest"]
+CMD [""]
