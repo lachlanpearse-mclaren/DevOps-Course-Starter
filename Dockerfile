@@ -18,6 +18,7 @@ ENTRYPOINT  poetry run flask run --host 0.0.0.0
 
 FROM base as test
 RUN poetry install && apt-get update && apt-get install wget gnupg unzip -y
+COPY ./todo_app /app/todo_app
 # Install Chrome
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
   && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
@@ -40,4 +41,5 @@ RUN CHROME_MAJOR_VERSION=$(google-chrome --version | sed -E "s/.* ([0-9]+)(\.[0-
   && ln -fs /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION /usr/bin/chromedriver
 ENV PATH=$PATH:/app
 EXPOSE 4444
-ENTRYPOINT  poetry run ptw --poll
+ENTRYPOINT  ["poetry", "run", "pytest"]
+CMD [""]
