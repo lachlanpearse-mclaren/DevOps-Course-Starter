@@ -15,3 +15,5 @@ script:
 - docker run --env-file .env.test todo-app:test todo_app/tests/test_app.py
 - docker run --env TRELLO_BOARD_ID --env TRELLO_AUTH --env TRELLO_TOKEN todo-app:test todo_app/tests_e2e/test_e2e.py
 - echo $DOCKER_PASSWORD | docker login --username $DOCKER_USER --password-stdin
+- docker build --target production --tag lachiexyz/todo-app:prod .
+- docker push lachiexyz/todo-app:prod
