@@ -2,13 +2,14 @@ FROM python:3 as base
 WORKDIR /app
 COPY ./poetry.toml /app
 COPY ./pyproject.toml /app
-RUN pip install poetry && poetry install
+RUN pip install poetry
 
 FROM base as production
 
 COPY ./todo_app /app/todo_app
 COPY ./start_todo-app.sh /app
-RUN chmod a+x /app/start_todo-app.sh
+RUN poetry config virtualenvs.create false --local && poetry install && chmod a+x /app/start_todo-app.sh
+
 ENV PORT=5000
 
 EXPOSE 5000
