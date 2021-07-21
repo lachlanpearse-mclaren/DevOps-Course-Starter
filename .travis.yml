@@ -21,5 +21,4 @@ script:
 - docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
 - docker tag $DOCKER_USER/todo-app:latest registry.heroku.com/lachlanpearse-todo-app/web
 - docker push registry.heroku.com/lachlanpearse-todo-app/web
-- heroku login
 - heroku container:release web --app lachlanpearse-todo-app
