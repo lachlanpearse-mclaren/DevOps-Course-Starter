@@ -11,12 +11,12 @@ env:
   - secure: "fkIMpdB51cpOgehQo+AUthfJrxOIZWUu917F/7GpmjOxyPcVO16pROIlSiC6J1GY+o/5sD1r8bMP4LKCZ7rtBM4SUaGqEsDTwt8wPUvJy21JVxd5NCjkeJVWR3FNFzhzcg5dk/WTbZnAuOW88wWgay9NvAXFoDF/JJkkAj6Z1XrNZFcrDLfZDdDdRZUVzc02o1iJQTpnZAEG7c1Q3dEDmLRkg1ZmOZaMW+pIQuJBEGqK1tpzQSpxen5L7nzJCcb1cAMSOqTHrVEY2fCf/RS6fVedbXzJetdUbnGe0bWBpRghuIKaTozedsMlFmUiHaicNz0WAXj2nKUQTETiPWHXBaahbwjT8J1ElRBKU2QSvHQ/Gy6JqM7c0WtnqE4zXfDqplMzCtw3AcrqcUZBKO9qeT/XsNRNnHag3Q7S6OWDk4RfAmQpE6u0J9c74fRPQrr9YDLcgPqwRfsZs0aGtoIAHiqWXmeK6JV/m2U1+p6MzU/jFcq6E2UB0AP0s2FxIDf+Ch6sdSgPoqy5+jvjyFSHjxikaHjsqkFCCJuWfULzayxciOG8g72jvmU3mlwHCXUm3H6+p5JaDcONYQFQJPWeYaW8xvu1W/6sr8n/V/UcP/wXFhV0SAvtxkdrRanc3mt2fqj736Q72guSPklxYH9PFXZMeROMyejHhsGQKB+M/tc="
 
 script:
-- docker build --target test --tag todo-app:test .
+- docker build --cache-from $DOCKER_USER/todo-app:latest --target test --tag todo-app:test .
 - docker run todo-app:test todo_app/tests/test_trello.py
 - docker run --env-file .env.test todo-app:test todo_app/tests/test_app.py
 - docker run --env TRELLO_BOARD_ID --env TRELLO_AUTH --env TRELLO_TOKEN todo-app:test todo_app/tests_e2e/test_e2e.py
 - echo $DOCKER_PASSWORD | docker login --username $DOCKER_USER --password-stdin
-- docker build --target production --tag $DOCKER_USER/todo-app:latest .
+- docker build --cache-from $DOCKER_USER/todo-app:latest --target production --tag $DOCKER_USER/todo-app:latest .
 - docker push $DOCKER_USER/todo-app:latest
 - docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
 - docker tag $DOCKER_USER/todo-app:latest registry.heroku.com/lachlanpearse-todo-app/web
