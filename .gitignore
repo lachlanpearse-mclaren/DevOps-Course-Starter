@@ -126,3 +126,4 @@ logs.txt
 nohup.out
 gunicorn*.log
 pytestdebug.log
+deploy-to-heroku.ps1
