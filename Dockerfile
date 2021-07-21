@@ -7,8 +7,12 @@ RUN pip install poetry && poetry install
 FROM base as production
 
 COPY ./todo_app /app/todo_app
+COPY ./start_todo-app.sh /app
+RUN chmod a+x /app/start_todo-app.sh
+
 EXPOSE 5000
-ENTRYPOINT  $(poetry env info --path)/bin/gunicorn --error-logfile /app/gunicorn_error.log --access-logfile /app/gunicorn_access.log --bind 0.0.0.0:5000 "todo_app.app:create_app()"
+
+ENTRYPOINT ["/app/start_todo-app.sh"]
 
 FROM base as development
 
