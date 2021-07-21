@@ -13,7 +13,7 @@ ENV PORT=5000
 
 EXPOSE 5000
 
-ENTRYPOINT ["/app/start_todo-app.sh"]
+ENTRYPOINT ["./start_todo-app.sh"]
 
 FROM base as development
 
