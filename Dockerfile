@@ -9,7 +9,7 @@ FROM base as production
 COPY ./todo_app /app/todo_app
 COPY ./start_todo-app.sh /app
 RUN chmod a+x /app/start_todo-app.sh
-
+ENV PORT=5000
 EXPOSE 5000
 
 ENTRYPOINT ["/app/start_todo-app.sh"]
