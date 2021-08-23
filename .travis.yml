@@ -16,9 +16,16 @@ script:
 - docker run --env-file .env.test todo-app:test todo_app/tests/test_app.py
 - docker run --env TRELLO_BOARD_ID --env TRELLO_AUTH --env TRELLO_TOKEN todo-app:test todo_app/tests_e2e/test_e2e.py
 - echo $DOCKER_PASSWORD | docker login --username $DOCKER_USER --password-stdin
+
+before_deploy:
 - docker build --target production --tag $DOCKER_USER/todo-app:latest .
 - docker push $DOCKER_USER/todo-app:latest
 - docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
 - docker tag $DOCKER_USER/todo-app:latest registry.heroku.com/lachlanpearse-todo-app/web
 - docker push registry.heroku.com/lachlanpearse-todo-app/web
-- heroku container:release web --app lachlanpearse-todo-app
+
+deploy:
+  provider: script
+  script: heroku container:release web --app lachlanpearse-todo-app
+  on:
+    branch: master
