@@ -2,23 +2,24 @@ FROM python:3 as base
 WORKDIR /app
 COPY ./poetry.toml /app
 COPY ./pyproject.toml /app
-RUN pip install poetry && poetry install
+COPY ./todo_app /app/todo_app
+RUN pip install poetry
 
 FROM base as production
 
-COPY ./todo_app /app/todo_app
-EXPOSE 5000
-ENTRYPOINT  $(poetry env info --path)/bin/gunicorn --error-logfile /app/gunicorn_error.log --access-logfile /app/gunicorn_access.log --bind 0.0.0.0:5000 "todo_app.app:create_app()"
 
-FROM base as development
+COPY ./start_todo-app.sh /app
+RUN poetry config virtualenvs.create false --local && poetry install && chmod a+x /app/start_todo-app.sh
 
-RUN poetry install
+ENV PORT=5000
+
 EXPOSE 5000
-ENTRYPOINT  poetry run flask run --host 0.0.0.0
+
+ENTRYPOINT ["./start_todo-app.sh"]
 
 FROM base as test
 RUN poetry install && apt-get update && apt-get install wget gnupg unzip -y
-COPY ./todo_app /app/todo_app
+
 # Install Chrome
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
   && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
