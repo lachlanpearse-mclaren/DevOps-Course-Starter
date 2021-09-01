@@ -160,8 +160,9 @@ def move_todo_card(card_id, new_list_id):
 
     for coll in collection_list:
         collection = db[coll]
-        for card in collection.find({}):
-            if card['_id'] == card_id:
+        for card in collection.find({}): 
+            if str(card['_id']) == str(card_id):
+                print(card['_id'])
                 new_card = ToDoCard(0, card['name'], new_list_id, card['due_date'], card['description'], datetime.datetime.today())
                 try:
                     new_collection = db[new_list_id]
