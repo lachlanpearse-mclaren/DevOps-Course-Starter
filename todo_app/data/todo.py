@@ -1,6 +1,6 @@
-import requests, os, datetime, json
+import requests, os, datetime, json, pymongo
 
-class TrelloCard:
+class ToDoCard:
 
     def __init__(self, id, name, idList, due_date, description, modified):
         self.id = id
@@ -83,6 +83,18 @@ def get_trello_keys():
         
     return auth_keys
 
+def get_mongodb_connection():
+
+    mongodb_connection_string = os.getenv('MONGO_DB_CONNECTION')
+
+    return mongodb_connection_string
+
+def get_mongodb_database_name():
+    
+    mongodb_name = os.getenv('MONGO_DB_NAME')
+
+    return mongodb_name
+
 def get_trello_board_id():
     board_id = os.getenv('TRELLO_BOARD_ID')
     return board_id
@@ -105,7 +117,6 @@ def get_trello_cards():
     trello_board_id = get_trello_board_id()
     response = requests.get(f'https://api.trello.com/1/boards/{trello_board_id}/cards?key={trello_auth_key[0]}&token={trello_auth_key[1]}')
 
-    #card_list = [TrelloCard(card['id'], card['name'], card['idList'], datetime.datetime.strptime(card['due'], '%Y-%m-%dT%H:%M:%S.%fZ'), card['desc']) for card in response.json()]
     card_list = []
     for card in response.json():
         if card['due'] == None:
@@ -114,8 +125,31 @@ def get_trello_cards():
         else:
             due_date = card['due']
 
-        card_list.append(TrelloCard(card['id'], card['name'], card['idList'], datetime.datetime.strptime(due_date, '%Y-%m-%dT%H:%M:%S.%fZ'), card['desc'], datetime.datetime.strptime(card['dateLastActivity'], '%Y-%m-%dT%H:%M:%S.%fZ').date()))
+        card_list.append(ToDoCard(card['id'], card['name'], card['idList'], datetime.datetime.strptime(due_date, '%Y-%m-%dT%H:%M:%S.%fZ'), card['desc'], datetime.datetime.strptime(card['dateLastActivity'], '%Y-%m-%dT%H:%M:%S.%fZ').date()))
         
+    return card_list
+
+def get_todo_cards():
+    db_connection = get_mongodb_connection()
+    db_name = get_mongodb_database_name()
+
+    mongo_client = pymongo.MongoClient(db_connection)
+    db = mongo_client[db_name]
+    collection_list = db.list_collection_names()
+
+    card_list = []
+    for coll in collection_list:
+        collection = db[coll]
+        
+        for card in collection.find({}):
+            if card['due'] == None:
+                due_date = datetime.datetime.strftime(datetime.datetime.today() + datetime.timedelta(365), '%Y-%m-%dT%H:%M:%S.%fZ')
+
+            else:
+                due_date = card['due']
+
+            card_list.append(ToDoCard(card['_id'], card['name'], card['idList'], datetime.datetime.strptime(due_date, '%Y-%m-%dT%H:%M:%S.%fZ'), card['desc'], datetime.datetime.strptime(card['dateLastActivity'], '%Y-%m-%dT%H:%M:%S.%fZ').date()))
+            
     return card_list
 
 def move_trello_card(card_id, new_list_id):
