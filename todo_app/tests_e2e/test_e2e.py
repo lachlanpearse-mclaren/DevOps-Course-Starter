@@ -25,7 +25,6 @@ def app_with_temp_board():
     thread.join(1)
     delete_test_db(db_name)
 
-
 @pytest.fixture(scope="module")
 def driver():
     opts = webdriver.ChromeOptions()
