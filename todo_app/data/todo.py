@@ -78,14 +78,6 @@ class ViewModel:
                 items.append(item)
         return items
 
-def get_trello_keys():
-    
-    auth_keys = []
-    auth_keys.append(os.getenv('TRELLO_AUTH'))
-    auth_keys.append(os.getenv('TRELLO_TOKEN'))
-        
-    return auth_keys
-
 def get_mongodb_connection():
 
     mongodb_connection_string = os.getenv('MONGO_DB_CONNECTION')
@@ -106,40 +98,6 @@ def mongo_db_connection():
     db = mongo_client[db_name]
 
     return db
-
-def get_trello_board_id():
-    board_id = os.getenv('TRELLO_BOARD_ID')
-    return board_id
-
-def get_trello_list_id(list_name):
-    trello_auth_key = get_trello_keys()
-    trello_board_id = get_trello_board_id()
-    response = requests.get(f'https://api.trello.com/1/boards/{trello_board_id}/lists?key={trello_auth_key[0]}&token={trello_auth_key[1]}')
-    
-    all_lists = response.json()
-
-    for i in all_lists:
-        if i['name'] == list_name:
-            list_id = i['id']
-    
-    return list_id
-
-def get_trello_cards():
-    trello_auth_key = get_trello_keys()
-    trello_board_id = get_trello_board_id()
-    response = requests.get(f'https://api.trello.com/1/boards/{trello_board_id}/cards?key={trello_auth_key[0]}&token={trello_auth_key[1]}')
-
-    card_list = []
-    for card in response.json():
-        if card['due'] == None:
-            due_date = datetime.datetime.strftime(datetime.datetime.today() + datetime.timedelta(365), '%Y-%m-%dT%H:%M:%S.%fZ')
-
-        else:
-            due_date = card['due']
-
-        card_list.append(ToDoCard(card['id'], card['name'], card['idList'], datetime.datetime.strptime(due_date, '%Y-%m-%dT%H:%M:%S.%fZ'), card['desc'], datetime.datetime.strptime(card['dateLastActivity'], '%Y-%m-%dT%H:%M:%S.%fZ').date()))
-        
-    return card_list
 
 def get_todo_cards():
     db = mongo_db_connection()
@@ -169,25 +127,13 @@ def move_todo_card(card_id, new_list_id):
                 print(result)
                 break
 
-def move_trello_card(card_id, new_list_id):
-    trello_auth_key = get_trello_keys()
-    requests.put(f'https://api.trello.com/1/cards/{card_id}?key={trello_auth_key[0]}&token={trello_auth_key[1]}&idList={new_list_id}')
+def create_test_db(db_name):
+    db_connection = get_mongodb_connection()
+    db = db_connection[db_name]
+    db['todo']
+    db['doing']
+    db['done']
 
-def create_trello_card(new_card):
-    trello_auth_key = get_trello_keys()
-    requests.post(f'https://api.trello.com/1/cards/?key={trello_auth_key[0]}&token={trello_auth_key[1]}&idList={new_card.idList}&name={new_card.name}&desc={new_card.description}&due={new_card.get_date_string()}')
-
-def create_todo_card(new_card):
-    db = mongo_db_connection()
-    card = new_card.get_card_as_dictionary()
-    db['todo'].insert_one(card)
-
-def create_trello_board(board_name):
-    trello_auth_key = get_trello_keys()
-    response = requests.post(f'https://api.trello.com/1/boards/?key={trello_auth_key[0]}&token={trello_auth_key[1]}&name={board_name}')
-    newBoard = response.json()
-    return newBoard['id']
-
-def delete_trello_board(board_id):
-    trello_auth_key = get_trello_keys()
-    requests.delete(f'https://api.trello.com/1/boards/{board_id}/?key={trello_auth_key[0]}&token={trello_auth_key[1]}')
+def delete_test_db(db_name):
+    db_connection = get_mongodb_connection()
+    db_connection.drop_database(db_name)
