@@ -1,6 +1,6 @@
 from flask import Flask
 from flask import render_template, request, redirect
-from todo_app.data.todo import ToDoCard, ViewModel, get_todo_cards, get_trello_list_id, move_todo_card, create_todo_card
+from todo_app.data.todo import ToDoCard, ViewModel, get_todo_cards, move_todo_card, create_todo_card
 import datetime,pytest
 
 def create_app():
@@ -40,14 +40,6 @@ def create_app():
         new_card = ToDoCard(0, new_item_title, trello_default_list, due_date, description, datetime.datetime.today())
         create_todo_card(new_card)
         return redirect(request.headers.get('Referer'))
-
-
-    @app.route('/archive_item', methods=['POST'])
-    def remove_existing_item():
-        archive_id = request.form.get('archive_item_id')
-        archive_trello_card(archive_id)
-        return redirect(request.headers.get('Referer'))
-
 
     @app.route('/toggle_status', methods=['POST'])
     def toggle_status():
