@@ -134,13 +134,15 @@ def create_todo_card(new_card):
 
 def create_test_db(db_name):
     db_connection = get_mongodb_connection()
-    db = db_connection[db_name]
-    db.create_collection('todo')
-    db.create_collection('doing')
-    db.create_collection('done')
+    mongo_client = pymongo.MongoClient(db_connection)
+    db = mongo_client[db_name]
+    db['todo']
+    db['doing']
+    db['done']
 
     return db_name
 
 def delete_test_db(db_name):
     db_connection = get_mongodb_connection()
-    db_connection.drop_database(db_name)
+    mongo_client = pymongo.MongoClient(db_connection)
+    mongo_client.drop_database(db_name)

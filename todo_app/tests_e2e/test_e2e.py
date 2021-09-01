@@ -46,13 +46,13 @@ def test_task_journey(driver,app_with_temp_board):
 
     assert driver.find_element_by_xpath("//*[starts-with(@id, 'Todo')]")
     
-    select = Select(driver.find_element_by_xpath("//*[starts-with(@id, 'new_trello_list_id_')]"))
+    select = Select(driver.find_element_by_xpath("//*[starts-with(@id, 'new_list_id_')]"))
     select.select_by_index(2)
     driver.find_element_by_xpath("//*[starts-with(@id, 'toggle_item_button')]").click()
     
     assert driver.find_element_by_xpath("//*[starts-with(@id, 'Doing')]")
 
-    select = Select(driver.find_element_by_xpath("//*[starts-with(@id, 'new_trello_list_id_')]"))
+    select = Select(driver.find_element_by_xpath("//*[starts-with(@id, 'new_list_id_')]"))
     select.select_by_index(3)
     driver.find_element_by_xpath("//*[starts-with(@id, 'toggle_item_button')]").click()
     
