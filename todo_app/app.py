@@ -1,6 +1,6 @@
 from flask import Flask
 from flask import render_template, request, redirect
-from todo_app.data.todo import ToDoCard, ViewModel, archive_trello_card, get_trello_cards, get_trello_list_id, move_trello_card, create_trello_card
+from todo_app.data.todo import ToDoCard, ViewModel, archive_trello_card, get_todo_cards, get_trello_list_id, move_trello_card, create_todo_card
 import datetime,pytest
 
 def create_app():
@@ -12,7 +12,7 @@ def create_app():
 
         list_ids = {'todo':'todo','doing':'doing','done':'done'}
 
-        items = get_trello_cards()
+        items = get_todo_cards()
 
         item_view_model = ViewModel(items, list_ids)
 

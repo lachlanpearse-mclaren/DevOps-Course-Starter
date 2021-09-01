@@ -26,23 +26,23 @@ class ToDoCard:
         return {'name' : self.name, 'idList' : self.idList, 'due_date' : self.due_date, 'description' : self.description, 'modified' : self.modified}
 
 class ViewModel:
-    def __init__(self, items, trello_list_ids):
+    def __init__(self, items, list_ids):
         self._items = items
-        self._trello_list_ids = trello_list_ids
+        self._list_ids = list_ids
 
     @property
     def items(self):
         return self._items
 
     @property
-    def trello_list_ids(self):
-        return self._trello_list_ids
+    def list_ids(self):
+        return self._list_ids
 
     @property
     def todo_items(self):
         items = []
         for item in self._items:
-            if item.idList == self.trello_list_ids['todo']:
+            if item.idList == self._list_ids['todo']:
                 items.append(item)
         return items
     
@@ -50,7 +50,7 @@ class ViewModel:
     def doing_items(self):
         items = []
         for item in self._items:
-            if item.idList == self.trello_list_ids['doing']:
+            if item.idList == self._list_ids['doing']:
                 items.append(item)
         return items
     
@@ -58,7 +58,7 @@ class ViewModel:
     def done_items(self):
         items = []
         for item in self._items:
-            if item.idList == self.trello_list_ids['done']:
+            if item.idList == self._list_ids['done']:
                 items.append(item)
         return items
 
@@ -66,7 +66,7 @@ class ViewModel:
     def recent_done_items(self):
         items = []
         for item in self._items:
-            if item.idList == self.trello_list_ids['done'] and item.modified == datetime.date.today():
+            if item.idList == self._list_ids['done'] and item.modified == datetime.date.today():
                 items.append(item)
         return items
 
@@ -74,7 +74,7 @@ class ViewModel:
     def older_done_items(self):
         items = []
         for item in self._items:
-            if item.idList == self.trello_list_ids['done'] and item.modified != datetime.date.today():
+            if item.idList == self._list_ids['done'] and item.modified != datetime.date.today():
                 items.append(item)
         return items
 
@@ -150,13 +150,7 @@ def get_todo_cards():
         collection = db[coll]
         
         for card in collection.find({}):
-            if card['due'] == None:
-                due_date = datetime.datetime.strftime(datetime.datetime.today() + datetime.timedelta(365), '%Y-%m-%dT%H:%M:%S.%fZ')
-
-            else:
-                due_date = card['due']
-
-            card_list.append(ToDoCard(card['_id'], card['name'], card['idList'], datetime.datetime.strptime(due_date, '%Y-%m-%dT%H:%M:%S.%fZ'), card['desc'], datetime.datetime.strptime(card['dateLastActivity'], '%Y-%m-%dT%H:%M:%S.%fZ').date()))
+            card_list.append(ToDoCard(card['_id'], card['name'], card['idList'], card['due_date'], card['description'], card['modified']))
             
     return card_list
 
