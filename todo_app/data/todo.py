@@ -126,13 +126,20 @@ def move_todo_card(card_id, new_list_id):
                 result = collection.delete_one({'_id' : card['_id']})
                 print(result)
                 break
+            
+def create_todo_card(new_card):
+    db = mongo_db_connection()
+    card = new_card.get_card_as_dictionary()
+    db['todo'].insert_one(card)
 
 def create_test_db(db_name):
     db_connection = get_mongodb_connection()
     db = db_connection[db_name]
-    db['todo']
-    db['doing']
-    db['done']
+    db.create_collection('todo')
+    db.create_collection('doing')
+    db.create_collection('done')
+
+    return db_name
 
 def delete_test_db(db_name):
     db_connection = get_mongodb_connection()
