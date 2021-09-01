@@ -28,4 +28,4 @@ deploy:
   provider: script
   script: heroku container:release web --app lachlanpearse-todo-app
   on:
-    branch: exercise-9
+    branch: master
