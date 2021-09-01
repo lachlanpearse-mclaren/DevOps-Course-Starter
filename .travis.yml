@@ -13,7 +13,7 @@ script:
 - docker build --target test --tag todo-app:test .
 - docker run todo-app:test todo_app/tests/unit_test.py
 #- docker run --env-file .env.test todo-app:test todo_app/tests/test_app.py
-- docker run --env MONGO_DB_CONNECTION --env MONGO_DB_NAME todo-app:test todo_app/tests_e2e/test_e2e.py
+#- docker run --env MONGO_DB_CONNECTION --env MONGO_DB_NAME todo-app:test todo_app/tests_e2e/test_e2e.py
 
 
 before_deploy:
