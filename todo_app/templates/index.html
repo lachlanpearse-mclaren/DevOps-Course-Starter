@@ -37,9 +37,9 @@
               <form id="toggle_item_form_{{ item.id }}" action="/toggle_status" method="POST" class="form-inline">
                   <select id="new_trello_list_id_{{ item.id }}" name="new_trello_list_id" class="form-control form-control-sm mx-2">
                     <option value="default">-- Status --</option>
-                    <option value="{{ view_model.trello_list_ids.todo}}">To Do</option>
-                    <option value="{{ view_model.trello_list_ids.doing}}">Doing</option>
-                    <option value="{{ view_model.trello_list_ids.done}}">Done</option>
+                    <option value="{{ view_model.list_ids.todo}}">To Do</option>
+                    <option value="{{ view_model.list_ids.doing}}">Doing</option>
+                    <option value="{{ view_model.list_ids.done}}">Done</option>
                   </select>
                   <input type="hidden" name="toggle_item_id" value="{{ item.id }}">
                   <input type="button" id="toggle_item_button_{{ item.id}}" class="btn btn-primary btn-sm" value="Update" onclick="if(document.getElementById('new_trello_list_id_{{ item.id }}').options[document.getElementById('new_trello_list_id_{{ item.id }}').selectedIndex].value == 'default'){window.alert('You must select a status to change to!')}else{document.getElementById('toggle_item_form_{{ item.id }}').submit()}">                
