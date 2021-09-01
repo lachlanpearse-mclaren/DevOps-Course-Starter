@@ -15,14 +15,14 @@
           <tr>
             <th scope="col"><strong>Task</strong></th>
             <th scope="col"><strong>Description</strong></th>
-            <th scopt="col"><strong>Due Date</strong></th>
             {% if request.values.get('sort') == None %}
-            <th scope="col"><strong><a href="/?sort=2" class="table">Status</a></strong></th>
+            <th scope="col"><strong><a href="/?sort=1" class="table">Due Date</a></strong></th>
             {% elif request.values.get('sort') == '2' %}
-            <th scope="col"><strong><a href="/?sort=1" class="table">Status</a> &circ;</strong></th>
+            <th scope="col"><strong><a href="/?sort=1" class="table">Due Date</a> &caron;</strong></th>
             {% elif request.values.get('sort') == '1' %}
-            <th scope="col"><strong><a href="/?sort=2" class="table">Status</a> &caron;</strong></th>
+            <th scope="col"><strong><a href="/?sort=2" class="table">Due Date</a> &circ;</strong></th>
             {% endif %}
+            <th scope="col"><strong>Status</strong></th>
             <th scope="col"><strong>Actions</strong></td>
           </tr>
       </thead>
@@ -56,14 +56,14 @@
           <tr>
             <th scope="col"><strong>Task</strong></th>
             <th scope="col"><strong>Description</strong></th>
-            <th scopt="col"><strong>Due Date</strong></th>
             {% if request.values.get('sort') == None %}
-            <th scope="col"><strong><a href="/?sort=2" class="table">Status</a></strong></th>
+            <th scope="col"><strong><a href="/?sort=2" class="table">Due Date</a></strong></th>
             {% elif request.values.get('sort') == '2' %}
-            <th scope="col"><strong><a href="/?sort=1" class="table">Status</a> &circ;</strong></th>
+            <th scope="col"><strong><a href="/?sort=1" class="table">Due Date</a> &circ;</strong></th>
             {% elif request.values.get('sort') == '1' %}
-            <th scope="col"><strong><a href="/?sort=2" class="table">Status</a> &caron;</strong></th>
+            <th scope="col"><strong><a href="/?sort=2" class="table">Due Date</a> &caron;</strong></th>
             {% endif %}
+            <th scope="col"><strong>Status</strong></th>
             <th scope="col"><strong>Actions</strong></td>
           </tr>
       </thead>
@@ -102,14 +102,14 @@
           <tr>
             <th scope="col"><strong>Task</strong></th>
             <th scope="col"><strong>Description</strong></th>
-            <th scopt="col"><strong>Due Date</strong></th>
             {% if request.values.get('sort') == None %}
-            <th scope="col"><strong><a href="/?sort=2" class="table">Status</a></strong></th>
+            <th scope="col"><strong><a href="/?sort=2" class="table">Due Date</a></strong></th>
             {% elif request.values.get('sort') == '2' %}
-            <th scope="col"><strong><a href="/?sort=1" class="table">Status</a> &circ;</strong></th>
+            <th scope="col"><strong><a href="/?sort=1" class="table">Due Date</a> &circ;</strong></th>
             {% elif request.values.get('sort') == '1' %}
-            <th scope="col"><strong><a href="/?sort=2" class="table">Status</a> &caron;</strong></th>
+            <th scope="col"><strong><a href="/?sort=2" class="table">Due Date</a> &caron;</strong></th>
             {% endif %}
+            <th scope="col"><strong>Status</strong></th>
             <th scope="col"><strong>Actions</strong></td>
           </tr>
       </thead>
