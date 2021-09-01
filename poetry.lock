@@ -203,6 +203,18 @@ optional = false
 python-versions = ">=3.6"
 
 [[package]]
+name = "mongomock"
+version = "3.23.0"
+description = "Fake pymongo stub for testing simple MongoDB-dependent code"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+sentinels = "*"
+six = "*"
+
+[[package]]
 name = "packaging"
 version = "21.0"
 description = "Core utilities for Python packages"
@@ -354,6 +366,14 @@ python-versions = "*"
 urllib3 = "*"
 
 [[package]]
+name = "sentinels"
+version = "1.0.0"
+description = "Various objects to denote special meanings in python"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "six"
 version = "1.16.0"
 description = "Python 2 and 3 compatibility utilities"
@@ -448,7 +468,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "d6aa3d3781eee4604286356b5175fd19119e65547d86652146c8bf2adcbbe8a9"
+content-hash = "354786cce21b451b8abc3fc1e88e16668a7628c7374729b0450b790074341414"
 
 [metadata.files]
 atomicwrites = [
@@ -578,6 +598,10 @@ markupsafe = [
     {file = "MarkupSafe-2.0.1-cp39-cp39-win_amd64.whl", hash = "sha256:693ce3f9e70a6cf7d2fb9e6c9d8b204b6b39897a2c4a1aa65728d5ac97dcc1d8"},
     {file = "MarkupSafe-2.0.1.tar.gz", hash = "sha256:594c67807fb16238b30c44bdf74f36c02cdf22d1c8cda91ef8a0ed8dabf5620a"},
 ]
+mongomock = [
+    {file = "mongomock-3.23.0-py2.py3-none-any.whl", hash = "sha256:01ce0c4eb02b2eced0a30882412444eaf6de27a90f2502bee64e04e3b8ecdc90"},
+    {file = "mongomock-3.23.0.tar.gz", hash = "sha256:d9945e7c87c221aed47c6c10708376351a5f5ee48060943c56ba195be425b0dd"},
+]
 packaging = [
     {file = "packaging-21.0-py3-none-any.whl", hash = "sha256:c86254f9220d55e31cc94d69bade760f0847da8000def4dfe1c6b872fd14ff14"},
     {file = "packaging-21.0.tar.gz", hash = "sha256:7dc96269f53a4ccec5c0670940a4281106dd0bb343f47b7471f779df49c2fbe7"},
@@ -682,6 +706,9 @@ requests = [
 selenium = [
     {file = "selenium-3.141.0-py2.py3-none-any.whl", hash = "sha256:2d7131d7bc5a5b99a2d9b04aaf2612c411b03b8ca1b1ee8d3de5845a9be2cb3c"},
     {file = "selenium-3.141.0.tar.gz", hash = "sha256:deaf32b60ad91a4611b98d8002757f29e6f2c2d5fcaf202e1c9ad06d6772300d"},
+]
+sentinels = [
+    {file = "sentinels-1.0.0.tar.gz", hash = "sha256:7be0704d7fe1925e397e92d18669ace2f619c92b5d4eb21a89f31e026f9ff4b1"},
 ]
 six = [
     {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
