@@ -22,7 +22,6 @@
             {% elif request.values.get('sort') == '1' %}
             <th scope="col"><strong><a href="/?sort=2" class="table">Due Date</a> &circ;</strong></th>
             {% endif %}
-            <th scope="col"><strong>Status</strong></th>
             <th scope="col"><strong>Actions</strong></td>
           </tr>
       </thead>
@@ -31,12 +30,11 @@
         <tr scope="row">
           <td>{{ item.name }}</td>
           <td>{{ item.description }}</td>
-          <td>{{ item.get_user_facing_date() }}</td>
-          <td id="Todo_{{ item.id }}">To Do</td>          
+          <td>{{ item.get_user_facing_date() }}</td>          
           <td class="form-inline">
               <form id="toggle_item_form_{{ item.id }}" action="/toggle_status" method="POST" class="form-inline">
                   <select id="new_list_id_{{ item.id }}" name="new_list_id" class="form-control form-control-sm mx-2">
-                    <option value="default">-- Status --</option>
+                    <option value="default">-- Change Status --</option>
                     <option value="{{ view_model.list_ids.todo}}">To Do</option>
                     <option value="{{ view_model.list_ids.doing}}">Doing</option>
                     <option value="{{ view_model.list_ids.done}}">Done</option>
@@ -63,7 +61,6 @@
             {% elif request.values.get('sort') == '1' %}
             <th scope="col"><strong><a href="/?sort=2" class="table">Due Date</a> &caron;</strong></th>
             {% endif %}
-            <th scope="col"><strong>Status</strong></th>
             <th scope="col"><strong>Actions</strong></td>
           </tr>
       </thead>
@@ -73,11 +70,10 @@
           <td>{{ item.name }}</td>
           <td>{{ item.description }}</td>
           <td>{{ item.get_user_facing_date() }}</td>
-          <td id="Doing_{{ item.id }}">Doing</td>
           <td class="form-inline">
               <form id="toggle_item_form_{{ item.id }}" action="/toggle_status" method="POST" class="form-inline">
                   <select id="new_list_id_{{ item.id }}" name="new_list_id" class="form-control form-control-sm mx-2">
-                    <option value="default">-- Status --</option>
+                    <option value="default">-- Change Status --</option>
                     <option value="{{ view_model.list_ids.todo}}">To Do</option>
                     <option value="{{ view_model.list_ids.doing}}">Doing</option>
                     <option value="{{ view_model.list_ids.done}}">Done</option>
@@ -109,7 +105,6 @@
             {% elif request.values.get('sort') == '1' %}
             <th scope="col"><strong><a href="/?sort=2" class="table">Due Date</a> &caron;</strong></th>
             {% endif %}
-            <th scope="col"><strong>Status</strong></th>
             <th scope="col"><strong>Actions</strong></td>
           </tr>
       </thead>
@@ -131,7 +126,7 @@
           <td class="form-inline">
               <form id="toggle_item_form_{{ item.id }}" action="/toggle_status" method="POST" class="form-inline">
                   <select id="new_list_id_{{ item.id }}" name="new_list_id" class="form-control form-control-sm mx-2">
-                    <option value="default">-- Status --</option>
+                    <option value="default">-- Change Status --</option>
                     <option value="{{ view_model.list_ids.todo}}">To Do</option>
                     <option value="{{ view_model.list_ids.doing}}">Doing</option>
                     <option value="{{ view_model.list_ids.done}}">Done</option>
