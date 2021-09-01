@@ -28,7 +28,7 @@
       <tbody>
         {% for item in view_model.todo_items %}
         <tr scope="row">
-          <td>{{ item.name }}</td>
+          <td id="Todo_{{ item.id }}">{{ item.name }}</td>
           <td>{{ item.description }}</td>
           <td>{{ item.get_user_facing_date() }}</td>          
           <td class="form-inline">
@@ -67,7 +67,7 @@
       <tbody>
         {% for item in view_model.doing_items %}
         <tr scope="row">
-          <td>{{ item.name }}</td>
+          <td id="Doing_{{ item.id }}">{{ item.name }}</td>
           <td>{{ item.description }}</td>
           <td>{{ item.get_user_facing_date() }}</td>
           <td class="form-inline">
@@ -119,7 +119,7 @@
         {% else %}
           <tr scope="row">
         {% endif %}
-          <td>{{ item.name }}</td>
+          <td id="Done_{{ item.id }}">{{ item.name }}</td>
           <td>{{ item.description }}</td>
           <td>{{ item.get_user_facing_date() }}</td>
           <td id="Done_{{ item.id }}">Done</td>
