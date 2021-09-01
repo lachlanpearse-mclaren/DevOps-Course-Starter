@@ -25,7 +25,6 @@ def create_app():
         else:
             items.sort(key=lambda x: x.due_date)
 
-
         return render_template('index.html', view_model=item_view_model, todays_date=todays_date)
 
 
