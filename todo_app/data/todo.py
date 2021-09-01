@@ -1,4 +1,4 @@
-import requests, os, datetime, json, pymongo
+import os, datetime, pymongo
 
 class ToDoCard:
 
