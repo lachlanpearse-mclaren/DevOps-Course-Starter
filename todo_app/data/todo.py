@@ -21,6 +21,9 @@ class ToDoCard:
     
     def get_modified_user_facing_date(self):
         return datetime.datetime.strftime(self.modified, '%d/%m/%Y')
+    
+    def get_card_as_dictionary(self):
+        return {'name' : self.name, 'idList' : self.idList, 'due_date' : self.due_date, 'description' : self.description, 'modified' : self.modified}
 
 class ViewModel:
     def __init__(self, items, trello_list_ids):
@@ -95,6 +98,15 @@ def get_mongodb_database_name():
 
     return mongodb_name
 
+def mongo_db_connection():
+    db_connection = get_mongodb_connection()
+    db_name = get_mongodb_database_name()
+
+    mongo_client = pymongo.MongoClient(db_connection)
+    db = mongo_client[db_name]
+
+    return db
+
 def get_trello_board_id():
     board_id = os.getenv('TRELLO_BOARD_ID')
     return board_id
@@ -130,11 +142,7 @@ def get_trello_cards():
     return card_list
 
 def get_todo_cards():
-    db_connection = get_mongodb_connection()
-    db_name = get_mongodb_database_name()
-
-    mongo_client = pymongo.MongoClient(db_connection)
-    db = mongo_client[db_name]
+    db = mongo_db_connection()
     collection_list = db.list_collection_names()
 
     card_list = []
@@ -159,6 +167,11 @@ def move_trello_card(card_id, new_list_id):
 def create_trello_card(new_card):
     trello_auth_key = get_trello_keys()
     requests.post(f'https://api.trello.com/1/cards/?key={trello_auth_key[0]}&token={trello_auth_key[1]}&idList={new_card.idList}&name={new_card.name}&desc={new_card.description}&due={new_card.get_date_string()}')
+
+def create_todo_card(new_card):
+    db = mongo_db_connection()
+    card = new_card.get_card_as_dictionary()
+    db['todo'].insert_one(card)
 
 def archive_trello_card(card_id):
     trello_auth_key = get_trello_keys()

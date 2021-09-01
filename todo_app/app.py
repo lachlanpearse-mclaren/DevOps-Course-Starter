@@ -38,7 +38,7 @@ def create_app():
         description = request.form.get('new_item_desc')
 
         new_card = ToDoCard(0, new_item_title, trello_default_list, due_date, description, datetime.datetime.today())
-        create_trello_card(new_card)
+        create_todo_card(new_card)
         return redirect(request.headers.get('Referer'))
 
 
