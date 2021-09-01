@@ -1,6 +1,6 @@
 from flask import Flask
 from flask import render_template, request, redirect
-from todo_app.data.todo import ToDoCard, ViewModel, archive_trello_card, get_todo_cards, get_trello_list_id, move_todo_card, create_todo_card
+from todo_app.data.todo import ToDoCard, ViewModel, get_todo_cards, get_trello_list_id, move_todo_card, create_todo_card
 import datetime,pytest
 
 def create_app():

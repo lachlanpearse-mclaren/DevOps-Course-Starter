@@ -162,18 +162,12 @@ def move_todo_card(card_id, new_list_id):
         collection = db[coll]
         for card in collection.find({}): 
             if str(card['_id']) == str(card_id):
-                print(card['_id'])
                 new_card = ToDoCard(0, card['name'], new_list_id, card['due_date'], card['description'], datetime.datetime.today())
-                try:
-                    new_collection = db[new_list_id]
-                    new_collection.insert_one(new_card.get_card_as_dictionary())
-                except:
-                    print("Moving card has failed")
-                finally:
-                    collection.delete_one({'_id' : card_id})
+                new_collection = db[new_list_id]
+                new_collection.insert_one(new_card.get_card_as_dictionary())
+                result = collection.delete_one({'_id' : card['_id']})
+                print(result)
                 break
-
-
 
 def move_trello_card(card_id, new_list_id):
     trello_auth_key = get_trello_keys()
@@ -187,10 +181,6 @@ def create_todo_card(new_card):
     db = mongo_db_connection()
     card = new_card.get_card_as_dictionary()
     db['todo'].insert_one(card)
-
-def archive_trello_card(card_id):
-    trello_auth_key = get_trello_keys()
-    requests.put(f'https://api.trello.com/1/cards/{card_id}?key={trello_auth_key[0]}&token={trello_auth_key[1]}&closed=true')
 
 def create_trello_board(board_name):
     trello_auth_key = get_trello_keys()
