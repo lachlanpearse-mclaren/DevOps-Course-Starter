@@ -18,7 +18,6 @@ the end to end tests to work.
 
 You can then run: "poetry run pytest" to execute all the currently defined tests. 
 
-
 ### Poetry installation (Bash)
 
 ```bash
