@@ -11,8 +11,6 @@ To configure this application to work with MongoDB, you need to update the follo
     MONGO_DB_CONNECTION: The connection string to your MongoDB account
     MONGO_DB_NAME: The name you'd like to have for your MongoDB for this application
 
-Also ensure your MongoDB database specified above contains three collections: "todo", "doing" and "done". 
-
 ### Test Configuration
 
 To run the unit tests, you will require pytest to be installed. You will also require the chromedriver.exe binary in the root directory for
