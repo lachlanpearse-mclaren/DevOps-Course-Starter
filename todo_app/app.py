@@ -17,8 +17,6 @@ def create_app():
         todays_date = datetime.datetime.strftime(datetime.date.today(), '%d/%m/%Y')
 
         if request.values.get('sort') == '1':
-            items.sort(key=lambda x: x.due_date)
-        elif request.values.get('sort') == '2':
             items.sort(key=lambda x: x.due_date, reverse=True)
         else:
             items.sort(key=lambda x: x.due_date)
