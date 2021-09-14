@@ -1,11 +1,23 @@
 from flask import Flask
 from flask import render_template, request, redirect
 from todo_app.data.todo import ToDoCard, ViewModel, get_todo_cards, move_todo_card, create_todo_card
-import datetime,pytest
+import datetime
+from flask_login import LoginManager
+
 
 def create_app():
+    login_manager = LoginManager()
+
+    @login_manager.unauthorized_handler
+    def unauthenticated():
+        pass
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return None
 
     app = Flask(__name__)
+    login_manager.init_app(app)
 
     @app.route('/')
     def index():
