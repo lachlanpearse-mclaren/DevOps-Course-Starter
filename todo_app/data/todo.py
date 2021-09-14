@@ -131,9 +131,6 @@ def create_test_db(db_name):
     db_connection = get_mongodb_connection()
     mongo_client = pymongo.MongoClient(db_connection)
     db = mongo_client[db_name]
-    db['todo']
-    db['doing']
-    db['done']
 
     return db_name
 
