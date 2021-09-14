@@ -10,11 +10,9 @@ def create_app():
     @app.route('/')
     def index():
 
-        list_ids = {'todo':'todo','doing':'doing','done':'done'}
-
         items = get_todo_cards()
 
-        item_view_model = ViewModel(items, list_ids)
+        item_view_model = ViewModel(items)
 
         todays_date = datetime.datetime.strftime(datetime.date.today(), '%d/%m/%Y')
 

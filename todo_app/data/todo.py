@@ -26,23 +26,18 @@ class ToDoCard:
         return {'name' : self.name, 'idList' : self.idList, 'due_date' : self.due_date, 'description' : self.description, 'modified' : self.modified}
 
 class ViewModel:
-    def __init__(self, items, list_ids):
+    def __init__(self, items):
         self._items = items
-        self._list_ids = list_ids
 
     @property
     def items(self):
         return self._items
 
     @property
-    def list_ids(self):
-        return self._list_ids
-
-    @property
     def todo_items(self):
         items = []
         for item in self._items:
-            if item.idList == self._list_ids['todo']:
+            if item.idList == 'todo':
                 items.append(item)
         return items
     
@@ -50,7 +45,7 @@ class ViewModel:
     def doing_items(self):
         items = []
         for item in self._items:
-            if item.idList == self._list_ids['doing']:
+            if item.idList == 'doing':
                 items.append(item)
         return items
     
@@ -58,7 +53,7 @@ class ViewModel:
     def done_items(self):
         items = []
         for item in self._items:
-            if item.idList == self._list_ids['done']:
+            if item.idList == 'done':
                 items.append(item)
         return items
 
@@ -66,7 +61,7 @@ class ViewModel:
     def recent_done_items(self):
         items = []
         for item in self._items:
-            if item.idList == self._list_ids['done'] and item.modified == datetime.date.today():
+            if item.idList == 'done' and item.modified == datetime.date.today():
                 items.append(item)
         return items
 
@@ -74,7 +69,7 @@ class ViewModel:
     def older_done_items(self):
         items = []
         for item in self._items:
-            if item.idList == self._list_ids['done'] and item.modified != datetime.date.today():
+            if item.idList == 'done' and item.modified != datetime.date.today():
                 items.append(item)
         return items
 
