@@ -1,6 +1,6 @@
 import os,pytest
 from threading import Thread
-from todo_app.data.trello_api import create_trello_board,delete_trello_board
+from todo_app.data.todo import create_test_db,delete_test_db
 from todo_app import app
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
@@ -12,9 +12,8 @@ def app_with_temp_board():
     file_path = find_dotenv('.env')
     load_dotenv(file_path, override=True)
     
-    board_id = create_trello_board('TestBoard')
-    os.environ['TRELLO_BOARD_ID'] = board_id
-
+    db_name = create_test_db('test_todo_app')
+    os.environ['MONGO_DB_NAME'] = db_name
 
     application = app.create_app()
 
@@ -24,8 +23,7 @@ def app_with_temp_board():
     yield application
 
     thread.join(1)
-    delete_trello_board(board_id)
-
+    delete_test_db(db_name)
 
 @pytest.fixture(scope="module")
 def driver():
@@ -47,13 +45,13 @@ def test_task_journey(driver,app_with_temp_board):
 
     assert driver.find_element_by_xpath("//*[starts-with(@id, 'Todo')]")
     
-    select = Select(driver.find_element_by_xpath("//*[starts-with(@id, 'new_trello_list_id_')]"))
+    select = Select(driver.find_element_by_xpath("//*[starts-with(@id, 'new_list_id_')]"))
     select.select_by_index(2)
     driver.find_element_by_xpath("//*[starts-with(@id, 'toggle_item_button')]").click()
     
     assert driver.find_element_by_xpath("//*[starts-with(@id, 'Doing')]")
 
-    select = Select(driver.find_element_by_xpath("//*[starts-with(@id, 'new_trello_list_id_')]"))
+    select = Select(driver.find_element_by_xpath("//*[starts-with(@id, 'new_list_id_')]"))
     select.select_by_index(3)
     driver.find_element_by_xpath("//*[starts-with(@id, 'toggle_item_button')]").click()
     

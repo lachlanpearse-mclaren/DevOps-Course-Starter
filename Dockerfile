@@ -6,20 +6,14 @@ COPY ./todo_app /app/todo_app
 RUN pip install poetry
 
 FROM base as production
-
-
 COPY ./start_todo-app.sh /app
 RUN poetry config virtualenvs.create false --local && poetry install && chmod a+x /app/start_todo-app.sh
-
 ENV PORT=5000
-
 EXPOSE 5000
-
-ENTRYPOINT ["./start_todo-app.sh"]
+ENTRYPOINT ["sh","./start_todo-app.sh"]
 
 FROM base as test
 RUN poetry install && apt-get update && apt-get install wget gnupg unzip -y
-
 # Install Chrome
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
   && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \

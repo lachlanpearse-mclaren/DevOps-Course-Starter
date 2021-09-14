@@ -4,15 +4,12 @@
 
 The project uses poetry for Python to create an isolated environment and manage package dependencies. To prepare your system, ensure you have an official distribution of Python version 3.7+ and install poetry using one of the following commands (as instructed by the [poetry documentation](https://python-poetry.org/docs/#system-requirements)):
 
-### Configuring Trello API Information
+### Configuring MongoDB Information
 
-To configure this application to work with Trello's API, you need to update the following variables in the .env file:
+To configure this application to work with MongoDB, you need to update the following variables in the .env file:
 
-    TRELLO_AUTH: Your auth key from Trello
-    TRELLO_TOKEN: Your security token from Trello
-    TRELLO_BOARD_ID: The board ID you wish to use for this program
-
-Also ensure your board specified above contains three lists: "To Do", "Doing" and "Done". 
+    MONGO_DB_CONNECTION: The connection string to your MongoDB account
+    MONGO_DB_NAME: The name you'd like to have for your MongoDB for this application
 
 ### Test Configuration
 
@@ -48,7 +45,7 @@ You'll also need to clone a new `.env` file from the `.env.tempalate` to store l
 $ cp .env.template .env  # (first time only)
 ```
 
-The `.env` file is used by flask to set environment variables when running `flask run`. This enables things like development mode (which also enables features like hot reloading when you make a file change). There's also a [SECRET_KEY](https://flask.palletsprojects.com/en/1.1.x/config/#SECRET_KEY) variable which is used to encrypt the flask session cookie.
+The `.env` file is used by flask to set environment variables when running `flask run`. This enables things like development mode (which also enables features like hot reloading when you make a file change). 
 
 ## Running the App
 

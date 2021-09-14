@@ -15,13 +15,12 @@
           <tr>
             <th scope="col"><strong>Task</strong></th>
             <th scope="col"><strong>Description</strong></th>
-            <th scopt="col"><strong>Due Date</strong></th>
             {% if request.values.get('sort') == None %}
-            <th scope="col"><strong><a href="/?sort=2" class="table">Status</a></strong></th>
+            <th scope="col"><strong><a href="/?sort=1" class="table">Due Date</a></strong></th>
             {% elif request.values.get('sort') == '2' %}
-            <th scope="col"><strong><a href="/?sort=1" class="table">Status</a> &circ;</strong></th>
+            <th scope="col"><strong><a href="/?sort=1" class="table">Due Date</a> &caron;</strong></th>
             {% elif request.values.get('sort') == '1' %}
-            <th scope="col"><strong><a href="/?sort=2" class="table">Status</a> &caron;</strong></th>
+            <th scope="col"><strong><a href="/?sort=2" class="table">Due Date</a> &circ;</strong></th>
             {% endif %}
             <th scope="col"><strong>Actions</strong></td>
           </tr>
@@ -29,20 +28,19 @@
       <tbody>
         {% for item in view_model.todo_items %}
         <tr scope="row">
-          <td>{{ item.name }}</td>
+          <td id="Todo_{{ item.id }}">{{ item.name }}</td>
           <td>{{ item.description }}</td>
-          <td>{{ item.get_user_facing_date() }}</td>
-          <td id="Todo_{{ item.id }}">To Do</td>          
+          <td>{{ item.get_user_facing_date() }}</td>          
           <td class="form-inline">
               <form id="toggle_item_form_{{ item.id }}" action="/toggle_status" method="POST" class="form-inline">
-                  <select id="new_trello_list_id_{{ item.id }}" name="new_trello_list_id" class="form-control form-control-sm mx-2">
-                    <option value="default">-- Status --</option>
-                    <option value="{{ view_model.trello_list_ids.todo}}">To Do</option>
-                    <option value="{{ view_model.trello_list_ids.doing}}">Doing</option>
-                    <option value="{{ view_model.trello_list_ids.done}}">Done</option>
+                  <select id="new_list_id_{{ item.id }}" name="new_list_id" class="form-control form-control-sm mx-2">
+                    <option value="default">-- Change Status --</option>
+                    <option value="todo">To Do</option>
+                    <option value="doing">Doing</option>
+                    <option value="done">Done</option>
                   </select>
                   <input type="hidden" name="toggle_item_id" value="{{ item.id }}">
-                  <input type="button" id="toggle_item_button_{{ item.id}}" class="btn btn-primary btn-sm" value="Update" onclick="if(document.getElementById('new_trello_list_id_{{ item.id }}').options[document.getElementById('new_trello_list_id_{{ item.id }}').selectedIndex].value == 'default'){window.alert('You must select a status to change to!')}else{document.getElementById('toggle_item_form_{{ item.id }}').submit()}">                
+                  <input type="button" id="toggle_item_button_{{ item.id}}" class="btn btn-primary btn-sm" value="Update" onclick="if(document.getElementById('new_list_id_{{ item.id }}').options[document.getElementById('new_list_id_{{ item.id }}').selectedIndex].value == 'default'){window.alert('You must select a status to change to!')}else{document.getElementById('toggle_item_form_{{ item.id }}').submit()}">                
               </form>
           </td>
         </tr>
@@ -56,13 +54,12 @@
           <tr>
             <th scope="col"><strong>Task</strong></th>
             <th scope="col"><strong>Description</strong></th>
-            <th scopt="col"><strong>Due Date</strong></th>
             {% if request.values.get('sort') == None %}
-            <th scope="col"><strong><a href="/?sort=2" class="table">Status</a></strong></th>
+            <th scope="col"><strong><a href="/?sort=2" class="table">Due Date</a></strong></th>
             {% elif request.values.get('sort') == '2' %}
-            <th scope="col"><strong><a href="/?sort=1" class="table">Status</a> &circ;</strong></th>
+            <th scope="col"><strong><a href="/?sort=1" class="table">Due Date</a> &circ;</strong></th>
             {% elif request.values.get('sort') == '1' %}
-            <th scope="col"><strong><a href="/?sort=2" class="table">Status</a> &caron;</strong></th>
+            <th scope="col"><strong><a href="/?sort=2" class="table">Due Date</a> &caron;</strong></th>
             {% endif %}
             <th scope="col"><strong>Actions</strong></td>
           </tr>
@@ -70,20 +67,19 @@
       <tbody>
         {% for item in view_model.doing_items %}
         <tr scope="row">
-          <td>{{ item.name }}</td>
+          <td id="Doing_{{ item.id }}">{{ item.name }}</td>
           <td>{{ item.description }}</td>
           <td>{{ item.get_user_facing_date() }}</td>
-          <td id="Doing_{{ item.id }}">Doing</td>
           <td class="form-inline">
               <form id="toggle_item_form_{{ item.id }}" action="/toggle_status" method="POST" class="form-inline">
-                  <select id="new_trello_list_id_{{ item.id }}" name="new_trello_list_id" class="form-control form-control-sm mx-2">
-                    <option value="default">-- Status --</option>
-                    <option value="{{ view_model.trello_list_ids.todo}}">To Do</option>
-                    <option value="{{ view_model.trello_list_ids.doing}}">Doing</option>
-                    <option value="{{ view_model.trello_list_ids.done}}">Done</option>
+                  <select id="new_list_id_{{ item.id }}" name="new_list_id" class="form-control form-control-sm mx-2">
+                    <option value="default">-- Change Status --</option>
+                    <option value="todo">To Do</option>
+                    <option value="doing">Doing</option>
+                    <option value="done">Done</option>
                   </select>
                   <input type="hidden" name="toggle_item_id" value="{{ item.id }}">
-                  <input type="button" id="toggle_item_button_{{ item.id }}" class="btn btn-primary btn-sm" value="Update" onclick="if(document.getElementById('new_trello_list_id_{{ item.id }}').options[document.getElementById('new_trello_list_id_{{ item.id }}').selectedIndex].value == 'default'){window.alert('You must select a status to change to!')}else{document.getElementById('toggle_item_form_{{ item.id }}').submit()}">                
+                  <input type="button" id="toggle_item_button_{{ item.id }}" class="btn btn-primary btn-sm" value="Update" onclick="if(document.getElementById('new_list_id_{{ item.id }}').options[document.getElementById('new_list_id_{{ item.id }}').selectedIndex].value == 'default'){window.alert('You must select a status to change to!')}else{document.getElementById('toggle_item_form_{{ item.id }}').submit()}">                
               </form>
           </td>
         </tr>
@@ -102,13 +98,12 @@
           <tr>
             <th scope="col"><strong>Task</strong></th>
             <th scope="col"><strong>Description</strong></th>
-            <th scopt="col"><strong>Due Date</strong></th>
             {% if request.values.get('sort') == None %}
-            <th scope="col"><strong><a href="/?sort=2" class="table">Status</a></strong></th>
+            <th scope="col"><strong><a href="/?sort=2" class="table">Due Date</a></strong></th>
             {% elif request.values.get('sort') == '2' %}
-            <th scope="col"><strong><a href="/?sort=1" class="table">Status</a> &circ;</strong></th>
+            <th scope="col"><strong><a href="/?sort=1" class="table">Due Date</a> &circ;</strong></th>
             {% elif request.values.get('sort') == '1' %}
-            <th scope="col"><strong><a href="/?sort=2" class="table">Status</a> &caron;</strong></th>
+            <th scope="col"><strong><a href="/?sort=2" class="table">Due Date</a> &caron;</strong></th>
             {% endif %}
             <th scope="col"><strong>Actions</strong></td>
           </tr>
@@ -124,26 +119,21 @@
         {% else %}
           <tr scope="row">
         {% endif %}
-          <td>{{ item.name }}</td>
+          <td id="Done_{{ item.id }}">{{ item.name }}</td>
           <td>{{ item.description }}</td>
           <td>{{ item.get_user_facing_date() }}</td>
           <td id="Done_{{ item.id }}">Done</td>
           <td class="form-inline">
               <form id="toggle_item_form_{{ item.id }}" action="/toggle_status" method="POST" class="form-inline">
-                  <select id="new_trello_list_id_{{ item.id }}" name="new_trello_list_id" class="form-control form-control-sm mx-2">
-                    <option value="default">-- Status --</option>
-                    <option value="{{ view_model.trello_list_ids.todo}}">To Do</option>
-                    <option value="{{ view_model.trello_list_ids.doing}}">Doing</option>
-                    <option value="{{ view_model.trello_list_ids.done}}">Done</option>
+                  <select id="new_list_id_{{ item.id }}" name="new_list_id" class="form-control form-control-sm mx-2">
+                    <option value="default">-- Change Status --</option>
+                    <option value="todo">To Do</option>
+                    <option value="doing">Doing</option>
+                    <option value="done">Done</option>
                   </select>
                   <input type="hidden" name="toggle_item_id" value="{{ item.id }}">
-                  <input type="button" id="toggle_item_button_{{ item.id}}" class="btn btn-primary btn-sm" value="Update" onclick="if(document.getElementById('new_trello_list_id_{{ item.id }}').options[document.getElementById('new_trello_list_id_{{ item.id }}').selectedIndex].value == 'default'){window.alert('You must select a status to change to!')}else{document.getElementById('toggle_item_form_{{ item.id }}').submit()}">                
+                  <input type="button" id="toggle_item_button_{{ item.id}}" class="btn btn-primary btn-sm" value="Update" onclick="if(document.getElementById('new_list_id_{{ item.id }}').options[document.getElementById('new_list_id_{{ item.id }}').selectedIndex].value == 'default'){window.alert('You must select a status to change to!')}else{document.getElementById('toggle_item_form_{{ item.id }}').submit()}">                
               </form>
-
-            <form id="archive_item_{{ item.id }}" action="/archive_item" method="POST" class="form-inline">
-                <input type="hidden" name="archive_item_id" value="{{ item.id }}">
-                 <input type="submit" value="Archive" class="btn btn-link btn-sm mx-2">
-            </form>
           </td>
         </tr>
         {% endfor %}
