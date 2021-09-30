@@ -1,0 +1,107 @@
+{% extends "layout.html" %}
+{% block title %}To-Do App{% endblock %}
+
+{% block content %}
+  <div class="jumbotron">
+    <h1 class="display-7">To-Do App</h1>
+    <p class="lead">Just another to-do app.</p>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <h3>To Do List</h3>
+      <table class="table table-hover table-sm">
+        <thead>
+          <tr>
+            <th scope="col"><strong>Task</strong></th>
+            <th scope="col"><strong>Description</strong></th>
+            {% if request.values.get('sort') == None %}
+            <th scope="col"><strong><a href="/?sort=1" class="table">Due Date</a></strong></th>
+            {% elif request.values.get('sort') == '2' %}
+            <th scope="col"><strong><a href="/?sort=1" class="table">Due Date</a> &caron;</strong></th>
+            {% elif request.values.get('sort') == '1' %}
+            <th scope="col"><strong><a href="/?sort=2" class="table">Due Date</a> &circ;</strong></th>
+            {% endif %}
+          </tr>
+      </thead>
+      <tbody>
+        {% for item in view_model.todo_items %}
+        <tr scope="row">
+          <td id="Todo_{{ item.id }}">{{ item.name }}</td>
+          <td>{{ item.description }}</td>
+          <td>{{ item.get_user_facing_date() }}</td>          
+        </tr>
+        {% endfor %}
+      </tbody>
+      </table>
+
+      <h3>Items in Progress</h3>
+      <table class="table table-hover table-sm">
+        <thead>
+          <tr>
+            <th scope="col"><strong>Task</strong></th>
+            <th scope="col"><strong>Description</strong></th>
+            {% if request.values.get('sort') == None %}
+            <th scope="col"><strong><a href="/?sort=2" class="table">Due Date</a></strong></th>
+            {% elif request.values.get('sort') == '2' %}
+            <th scope="col"><strong><a href="/?sort=1" class="table">Due Date</a> &circ;</strong></th>
+            {% elif request.values.get('sort') == '1' %}
+            <th scope="col"><strong><a href="/?sort=2" class="table">Due Date</a> &caron;</strong></th>
+            {% endif %}
+          </tr>
+      </thead>
+      <tbody>
+        {% for item in view_model.doing_items %}
+        <tr scope="row">
+          <td id="Doing_{{ item.id }}">{{ item.name }}</td>
+          <td>{{ item.description }}</td>
+          <td>{{ item.get_user_facing_date() }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      </table>
+
+      <h3>Completed Items</h3>
+      {% if view_model.done_items|length >= 5 %}
+      <br />
+      <div><button class="btn btn-primary btn-sm" type="button" data-toggle="collapse" data-target="#completedOlder" aria-controls="completedOlder">Show/Hide Older Tasks</button></div>
+      <br />
+      {% endif %}
+      <table class="table table-hover table-sm">
+        <thead>
+          <tr>
+            <th scope="col"><strong>Task</strong></th>
+            <th scope="col"><strong>Description</strong></th>
+            {% if request.values.get('sort') == None %}
+            <th scope="col"><strong><a href="/?sort=2" class="table">Due Date</a></strong></th>
+            {% elif request.values.get('sort') == '2' %}
+            <th scope="col"><strong><a href="/?sort=1" class="table">Due Date</a> &circ;</strong></th>
+            {% elif request.values.get('sort') == '1' %}
+            <th scope="col"><strong><a href="/?sort=2" class="table">Due Date</a> &caron;</strong></th>
+            {% endif %}
+          </tr>
+      </thead>
+      <tbody>
+        {% for item in view_model.done_items %}
+        {% if view_model.done_items|length >= 5 %}
+          {% if item.get_modified_user_facing_date() == todays_date %}
+          <tr scope="row" class="collapse show" id="completedToday">
+          {% else %}
+          <tr scope="row" class="collapse" id="completedOlder">
+          {% endif %}
+        {% else %}
+          <tr scope="row">
+        {% endif %}
+          <td id="Done_{{ item.id }}">{{ item.name }}</td>
+          <td>{{ item.description }}</td>
+          <td>{{ item.get_user_facing_date() }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      </table>
+      <br />
+    </div>
+  </div>
+
+
+{% endblock %}
