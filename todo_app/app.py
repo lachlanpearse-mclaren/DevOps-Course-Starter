@@ -53,7 +53,7 @@ def create_app():
             items.sort(key=lambda x: x.due_date)
 
 
-        if hasattr('current_user', 'role'):
+        if hasattr(current_user, 'role'):
             if current_user.role == 'writer':
                 return render_template('index.html', view_model=item_view_model, todays_date=todays_date)   
             else:
