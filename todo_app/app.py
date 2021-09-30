@@ -1,8 +1,8 @@
 from flask import Flask
 from flask import render_template, request, redirect
 from todo_app.data.todo import ToDoCard, ViewModel, get_todo_cards, move_todo_card, create_todo_card
-import datetime, os, requests
-from flask_login import LoginManager, login_required, UserMixin, login_user
+import datetime, os, requests, json
+from flask_login import LoginManager, login_required, UserMixin, login_user, current_user
 from oauthlib.oauth2 import WebApplicationClient
 
 login_manager = LoginManager()
@@ -24,7 +24,7 @@ class User(UserMixin):
         self.id = user_id
     @property
     def role(self):
-        if self.id =='lachlanpearse-mclaren':
+        if self.id == 'lachlanpearse-mclaren':
             return 'writer'
         else:
             return 'reader'
@@ -52,7 +52,12 @@ def create_app():
         else:
             items.sort(key=lambda x: x.due_date)
 
-        return render_template('index.html', view_model=item_view_model, todays_date=todays_date)
+        print(current_user.role)
+        if current_user.role == 'writer':
+            return render_template('index.html', view_model=item_view_model, todays_date=todays_date)
+        else:
+            return render_template('index_ro.html', view_model=item_view_model, todays_date=todays_date)
+
 
 
     @app.route('/new_item', methods=['POST'])
@@ -89,7 +94,8 @@ def create_app():
         access = requests.post(token[0], headers=token[1], data=token[2], auth=(os.environ.get('GITHUB_CLIENTID'), os.environ.get('GITHUB_SECRET')))
         client.parse_request_body_response(access.text)
         github_user_request_param = client.add_token('https://api.github.com/user')
-        user_id = requests.get(github_user_request_param[0], headers=github_user_request_param[1]).json()
+        user_id = requests.get(github_user_request_param[0], headers=github_user_request_param[1]).json()['login']
+        print(user_id)
         
         login_user(User(user_id))
 
