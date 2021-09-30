@@ -1,20 +1,25 @@
 from flask import Flask
 from flask import render_template, request, redirect
 from todo_app.data.todo import ToDoCard, ViewModel, get_todo_cards, move_todo_card, create_todo_card
-import datetime
+import datetime, os
 from flask_login import LoginManager
+from oauthlib.oauth2 import WebApplicationClient
 
+login_manager = LoginManager()
+
+@login_manager.unauthorized_handler
+def unauthenticated():
+    client = WebApplicationClient(os.environ.get('GITHUB_CLIENTID'))
+    auth_redirect = client.prepare_request_uri('https://github.com/login/oauth/authorize')
+
+    return redirect(auth_redirect)
+
+@login_manager.user_loader
+def load_user(user_id):
+    return None
 
 def create_app():
-    login_manager = LoginManager()
-
-    @login_manager.unauthorized_handler
-    def unauthenticated():
-        pass
-
-    @login_manager.user_loader
-    def load_user(user_id):
-        return None
+    
 
     app = Flask(__name__)
     login_manager.init_app(app)
