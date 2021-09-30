@@ -16,6 +16,7 @@ def app_with_temp_board():
     os.environ['MONGO_DB_NAME'] = db_name
 
     application = app.create_app()
+    application.config['LOGIN_DISABLED'] = True
 
     thread = Thread(target=lambda: application.run(use_reloader=False))
     thread.daemon = True

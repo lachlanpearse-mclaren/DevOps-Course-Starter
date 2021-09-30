@@ -1,8 +1,8 @@
 from flask import Flask
 from flask import render_template, request, redirect
 from todo_app.data.todo import ToDoCard, ViewModel, get_todo_cards, move_todo_card, create_todo_card
-import datetime, os
-from flask_login import LoginManager
+import datetime, os, requests
+from flask_login import LoginManager, login_required, UserMixin, login_user
 from oauthlib.oauth2 import WebApplicationClient
 
 login_manager = LoginManager()
@@ -16,15 +16,29 @@ def unauthenticated():
 
 @login_manager.user_loader
 def load_user(user_id):
-    return None
+    return User(user_id)
+
+
+class User(UserMixin):
+    def __init__(self, user_id):
+        self.id = user_id
+    @property
+    def role(self):
+        if self.id =='lachlanpearse-mclaren':
+            return 'writer'
+        else:
+            return 'reader'
 
 def create_app():
     
 
     app = Flask(__name__)
+    app.secret_key = os.urandom(24)
     login_manager.init_app(app)
 
+    
     @app.route('/')
+    @login_required
     def index():
 
         items = get_todo_cards()
@@ -42,6 +56,7 @@ def create_app():
 
 
     @app.route('/new_item', methods=['POST'])
+    @login_required
     def new_item():
         new_item_title = request.form.get('new_item_title')
         trello_default_list = 'todo'
@@ -57,6 +72,7 @@ def create_app():
         return redirect(request.headers.get('Referer'))
 
     @app.route('/toggle_status', methods=['POST'])
+    @login_required
     def toggle_status():
         card_id = request.form.get('toggle_item_id')
         new_list_id = request.form.get('new_list_id')
@@ -64,6 +80,20 @@ def create_app():
         move_todo_card(card_id,new_list_id)
 
         return redirect(request.headers.get('Referer'))
+
+    @app.route('/login')
+    def login():
+        github_code = request.args.get('code')
+        client =  WebApplicationClient(os.environ.get('GITHUB_CLIENTID'))
+        token = client.prepare_token_request('https://github.com/login/oauth/access_token', code=github_code)
+        access = requests.post(token[0], headers=token[1], data=token[2], auth=(os.environ.get('GITHUB_CLIENTID'), os.environ.get('GITHUB_SECRET')))
+        client.parse_request_body_response(access.text)
+        github_user_request_param = client.add_token('https://api.github.com/user')
+        user_id = requests.get(github_user_request_param[0], headers=github_user_request_param[1]).json()
+        
+        login_user(User(user_id))
+
+        return redirect('/')
 
     if __name__ == '__main__':
         app.run()
