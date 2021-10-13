@@ -9,8 +9,8 @@ login_manager = LoginManager()
 
 @login_manager.unauthorized_handler
 def unauthenticated():
-    client = WebApplicationClient(os.environ.get('GITHUB_CLIENTID'))
-    auth_redirect = client.prepare_request_uri('https://github.com/login/oauth/authorize')
+    client = WebApplicationClient(os.environ.get('AUTH_CLIENTID'))
+    auth_redirect = client.prepare_request_uri(os.getenv('AUTH_REDIRECT_URL'))
 
     return redirect(auth_redirect)
 
@@ -92,11 +92,11 @@ def create_app():
     @app.route('/login')
     def login():
         github_code = request.args.get('code')
-        client =  WebApplicationClient(os.environ.get('GITHUB_CLIENTID'))
-        token = client.prepare_token_request('https://github.com/login/oauth/access_token', code=github_code)
-        access = requests.post(token[0], headers=token[1], data=token[2], auth=(os.environ.get('GITHUB_CLIENTID'), os.environ.get('GITHUB_SECRET')))
+        client =  WebApplicationClient(os.environ.get('AUTH_CLIENTID'))
+        token = client.prepare_token_request(os.getenv('AUTH_TOKEN_URL'), code=github_code)
+        access = requests.post(token[0], headers=token[1], data=token[2], auth=(os.environ.get('AUTH_CLIENTID'), os.environ.get('AUTH_SECRET')))
         client.parse_request_body_response(access.text)
-        github_user_request_param = client.add_token('https://api.github.com/user')
+        github_user_request_param = client.add_token(os.getenv('AUTH_API_URL'))
         user_id = requests.get(github_user_request_param[0], headers=github_user_request_param[1]).json()['login']
         print(user_id)
         
