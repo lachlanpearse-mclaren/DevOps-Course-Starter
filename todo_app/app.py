@@ -33,7 +33,7 @@ def create_app():
     
 
     app = Flask(__name__)
-    app.secret_key = os.urandom(24)
+    app.secret_key = os.getenv('APP_SECRET')
     login_manager.init_app(app)
 
     
