@@ -98,3 +98,13 @@ To start the full development/test suite, you can use docker-compose with the fo
 $ docker-compose up --build 
 ```
 The test container will monitor for code changes and automatically re-run the test suite.
+
+## Configuring the App With OAuth authentication
+
+This app uses OAuth to manage user access. You can use any OAuth provider (we use GitHub by default). You simply need to register your application with your chosen provider and populate your .env file with the missing variables such as ClientID, Client Secret, as well as your redirect URLs.
+
+The APP_SERCET is a string you can generate yourself manually.
+
+The return URL once your user is authentication should be https://your.app.url/login
+
+
