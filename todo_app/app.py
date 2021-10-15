@@ -66,7 +66,7 @@ def create_app():
     @app.route('/new_item', methods=['POST'])
     @login_required
     def new_item():
-        if current_user.role == 'writer' or app.config['LOGIN_DISABLED'] is not None:
+        if current_user.role == 'writer' or app.config['LOGIN_DISABLED'] == True:
             new_item_title = request.form.get('new_item_title')
             trello_default_list = 'todo'
             if request.form.get('new_item_due'):
