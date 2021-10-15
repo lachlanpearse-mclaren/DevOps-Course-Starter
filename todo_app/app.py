@@ -24,7 +24,7 @@ class User(UserMixin):
         self.id = user_id
     @property
     def role(self):
-        if self.id == 'lachlanpearse-mclaren':
+        if self.id == 'lachlanpearse-mclaren' or self.id == 'e2e_test':
             return 'writer'
         else:
             return 'reader'
@@ -66,7 +66,7 @@ def create_app():
     @app.route('/new_item', methods=['POST'])
     @login_required
     def new_item():
-        if current_user.role == 'writer' or app.config['LOGIN_DISABLED'] == True:
+        if 'LOGIN_DISABLED' in app.config or current_user.role == 'writer':
             new_item_title = request.form.get('new_item_title')
             trello_default_list = 'todo'
             if request.form.get('new_item_due'):
@@ -83,10 +83,11 @@ def create_app():
     @app.route('/toggle_status', methods=['POST'])
     @login_required
     def toggle_status():
-        card_id = request.form.get('toggle_item_id')
-        new_list_id = request.form.get('new_list_id')
+        if 'LOGIN_DISABLED' in app.config or current_user.role == 'writer':
+            card_id = request.form.get('toggle_item_id')
+            new_list_id = request.form.get('new_list_id')
 
-        move_todo_card(card_id,new_list_id)
+            move_todo_card(card_id,new_list_id)
 
         return redirect(request.headers.get('Referer'))
 
