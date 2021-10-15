@@ -94,11 +94,11 @@ def create_app():
     @app.route('/login')
     def login():
         github_code = request.args.get('code')
-        client =  WebApplicationClient(os.getenv('AUTH_CLIENTID'))
-        token = client.prepare_token_request(os.getenv('AUTH_TOKEN_URL'), code=github_code)
-        access = requests.post(token[0], headers=token[1], data=token[2], auth=(os.getenv('AUTH_CLIENTID'), os.getenv('AUTH_SECRET')))
+        client =  WebApplicationClient(os.environ.get('AUTH_CLIENTID'))
+        token = client.prepare_token_request(os.environ.get('AUTH_TOKEN_URL'), code=github_code)
+        access = requests.post(token[0], headers=token[1], data=token[2], auth=(os.environ.get('AUTH_CLIENTID'), os.environ.get('AUTH_SECRET')))
         client.parse_request_body_response(access.text)
-        github_user_request_param = client.add_token(os.getenv('AUTH_API_URL'))
+        github_user_request_param = client.add_token(os.environ.get('AUTH_API_URL'))
         user_id = requests.get(github_user_request_param[0], headers=github_user_request_param[1]).json()['login']
         print(user_id)
         
