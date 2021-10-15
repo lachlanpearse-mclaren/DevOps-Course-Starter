@@ -66,17 +66,18 @@ def create_app():
     @app.route('/new_item', methods=['POST'])
     @login_required
     def new_item():
-        new_item_title = request.form.get('new_item_title')
-        trello_default_list = 'todo'
-        if request.form.get('new_item_due'):
-            due_date = datetime.datetime.strptime(request.form.get('new_item_due'), '%Y-%m-%d')
-        else:
-            due_date = datetime.datetime.today() + datetime.timedelta(30)
-        
-        description = request.form.get('new_item_desc')
+        if current_user.role == 'writer' or app.config['LOGIN_DISABLED'] is not None:
+            new_item_title = request.form.get('new_item_title')
+            trello_default_list = 'todo'
+            if request.form.get('new_item_due'):
+                due_date = datetime.datetime.strptime(request.form.get('new_item_due'), '%Y-%m-%d')
+            else:
+                due_date = datetime.datetime.today() + datetime.timedelta(30)
+            
+            description = request.form.get('new_item_desc')
 
-        new_card = ToDoCard(0, new_item_title, trello_default_list, due_date, description, datetime.datetime.today())
-        create_todo_card(new_card)
+            new_card = ToDoCard(0, new_item_title, trello_default_list, due_date, description, datetime.datetime.today())
+            create_todo_card(new_card)
         return redirect(request.headers.get('Referer'))
 
     @app.route('/toggle_status', methods=['POST'])

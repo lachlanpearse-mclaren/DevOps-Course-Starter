@@ -2,6 +2,7 @@ import os,pytest
 from threading import Thread
 from todo_app.data.todo import create_test_db,delete_test_db
 from todo_app import app
+from todo_app.app import User
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 from dotenv import find_dotenv,load_dotenv
