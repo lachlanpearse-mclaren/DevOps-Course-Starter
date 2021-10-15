@@ -2,6 +2,7 @@ import os,pytest
 from threading import Thread
 from todo_app.data.todo import create_test_db,delete_test_db
 from todo_app import app
+from todo_app.app import User
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 from dotenv import find_dotenv,load_dotenv
@@ -16,6 +17,7 @@ def app_with_temp_board():
     os.environ['MONGO_DB_NAME'] = db_name
 
     application = app.create_app()
+    application.config['LOGIN_DISABLED'] = True
 
     thread = Thread(target=lambda: application.run(use_reloader=False))
     thread.daemon = True
