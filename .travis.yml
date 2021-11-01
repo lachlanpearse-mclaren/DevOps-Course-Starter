@@ -29,4 +29,4 @@ deploy:
   provider: script
   script: heroku container:release web --app lachlanpearse-todo-app && chmod a+rwx ./webhook.sh && bash ./webhook.sh
   on:
-    branch: exercise-11
+    branch: master
