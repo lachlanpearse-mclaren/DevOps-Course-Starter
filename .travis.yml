@@ -27,6 +27,6 @@ before_deploy:
 
 deploy:
   provider: script
-  script: heroku container:release web --app lachlanpearse-todo-app && chmod a+rwx ./scripts/webhook.sh && bash ./scripts/webhook.sh
+  script: heroku container:release web --app lachlanpearse-todo-app && chmod a+rwx ./webhook.sh && bash ./webhook.sh
   on:
     branch: exercise-11
