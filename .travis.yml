@@ -30,6 +30,6 @@ deploy:
   script: 
   - heroku container:release web --app lachlanpearse-todo-app
   - chmod +x webhook.sh
-  - sh webhook.sh
+  - bash webhook.sh
   on:
     branch: exercise-11
