@@ -27,6 +27,8 @@ before_deploy:
 
 deploy:
   provider: script
-  script: heroku container:release web --app lachlanpearse-todo-app
+  script: 
+  - heroku container:release web --app lachlanpearse-todo-app
+  - webhook.sh
   on:
-    branch: master
+    branch: exercise-11
