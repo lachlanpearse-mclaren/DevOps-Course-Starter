@@ -24,10 +24,9 @@ before_deploy:
 - docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
 - docker tag $DOCKER_USER/todo-app:latest registry.heroku.com/lachlanpearse-todo-app/web
 - docker push registry.heroku.com/lachlanpearse-todo-app/web
-- chmod a+rwx ./scripts/webhook.sh
 
 deploy:
   provider: script
-  script: heroku container:release web --app lachlanpearse-todo-app && bash ./scripts/webhook.sh
+  script: heroku container:release web --app lachlanpearse-todo-app && chmod a+rwx ./scripts/webhook.sh && bash ./scripts/webhook.sh
   on:
     branch: exercise-11
