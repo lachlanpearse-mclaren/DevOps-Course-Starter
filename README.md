@@ -107,4 +107,8 @@ The APP_SERCET is a string you can generate yourself manually.
 
 The return URL once your user is authentication should be https://your.app.url/login
 
+## Azure App Service - Continuous Deployment
 
+This app is now configured to deploy to an Azure App Service container as well as a container on Heroku. You can view the running application at:
+
+https://lp-todo-app.azurewebsites.net 
