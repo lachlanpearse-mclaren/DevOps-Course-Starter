@@ -26,4 +26,4 @@ deploy:
   provider: script
   script: bash ./deploy.sh
   on:
-    branch: exercise-11
+    branch: master
