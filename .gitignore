@@ -126,3 +126,6 @@ logs.txt
 nohup.out
 gunicorn*.log
 pytestdebug.log
+.terraform
+.terraform.lock.hcl
+terraform.tfstate
