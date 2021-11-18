@@ -1,3 +1,23 @@
+variable "prefix" {
+description = "The prefix used for all resources in this
+environment"
+}
+variable "location" {
+description = "The Azure location where all resources in this
+deployment should be created"
+default = "uksouth"
+}
+
+variable "FLASK_APP" {
+  description = "App Location"
+  sensitive   = true
+}
+
+variable "FLASK_APP" {
+  description = "App Location"
+  sensitive   = true
+}
+
 variable "FLASK_APP" {
   description = "App Location"
   sensitive   = true
