@@ -27,7 +27,7 @@ data "azurerm_cosmosdb_mongo_database" "main" {
 }
 
 resource "azurerm_app_service_plan" "main" {
-  name                = "lp-unit12-project-asp"
+  name                = "${var.prefix}-todo-asp"
   location            = data.azurerm_resource_group.main.location
   resource_group_name = data.azurerm_resource_group.main.name
   kind                = "Linux"
@@ -39,7 +39,7 @@ resource "azurerm_app_service_plan" "main" {
 }
 
 resource "azurerm_app_service" "main" {
-  name                = "lp-unit12-projectexercise-todo"
+  name                = "${var.prefix}-todo-app"
   location            = data.azurerm_resource_group.main.location
   resource_group_name = data.azurerm_resource_group.main.name
   app_service_plan_id = azurerm_app_service_plan.main.id
@@ -50,7 +50,7 @@ resource "azurerm_app_service" "main" {
   app_settings = {
     "DOCKER_REGISTRY_SERVER_URL" = "https://index.docker.io"
     "FLASK_APP"                  = var.FLASK_APP
-    "MONGO_DB_CONNECTION"  = "mongodb://${data.azurerm_cosmosdb_account.main.name}:${data.azurerm_cosmosdb_account.main.primary_key}@${data.azurerm_cosmosdb_account.main.name}.mongo.cosmos.azure.com:10255/DefaultDatabase?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@${data.azurerm_cosmosdb_account.main.name}@"
+    "MONGO_DB_CONNECTION"        = "mongodb://${data.azurerm_cosmosdb_account.main.name}:${data.azurerm_cosmosdb_account.main.primary_key}@${data.azurerm_cosmosdb_account.main.name}.mongo.cosmos.azure.com:10255/DefaultDatabase?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@${data.azurerm_cosmosdb_account.main.name}@"
     "MONGO_DB_NAME"              = "${data.azurerm_cosmosdb_mongo_database.main.name}"
     "LOGIN_DISABLED"             = var.LOGIN_DISABLED
     "AUTH_CLIENTID"              = var.AUTH_CLIENTID
