@@ -22,11 +22,11 @@ script:
 - docker run --env MONGO_DB_CONNECTION --env MONGO_DB_NAME todo-app:test todo_app/tests_e2e/test_e2e.py
 
 install:
-- wget https://releases.hashicorp.com/terraform/$TF_VERSION/terraform_$TF_VERSION_linux_amd64.zip
-- unzip terraform_$TF_VERSION_linux_amd64.zip
+- wget https://releases.hashicorp.com/terraform/"$TF_VERSION"/terraform_"$TF_VERSION"_linux_amd64.zip
+- unzip terraform_"$TF_VERSION"_linux_amd64.zip
 - sudo mv terraform /usr/local/bin/
-- rm terraform_$TF_VERSION_linux_amd64.zip
-- terraform init 
+- rm terraform_"$TF_VERSION"_linux_amd64.zip
+- terraform init
 
 before_deploy:
 - echo $DOCKER_PASSWORD | docker login --username $DOCKER_USER --password-stdin
