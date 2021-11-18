@@ -49,16 +49,16 @@ resource "azurerm_app_service" "main" {
   }
   app_settings = {
     "DOCKER_REGISTRY_SERVER_URL" = "https://index.docker.io"
-    "FLASK_APP"           = var.FLASK_APP
-    "MONGO_DB_CONNECTION" = var.MONGO_DB_CONNECTION
-    "MONGO_DB_NAME"       = var.MONGO_DB_NAME
-    "LOGIN_DISABLED"      = var.LOGIN_DISABLED
-    "AUTH_CLIENTID"       = var.AUTH_CLIENTID
-    "AUTH_SECRET"         = var.AUTH_SECRET
-    "AUTH_REDIRECT_URL"   = var.AUTH_REDIRECT_URL
-    "AUTH_TOKEN_URL"      = var.AUTH_TOKEN_URL
-    "AUTH_API_URL"        = var.AUTH_API_URL
-    "APP_SECRET"          = var.APP_SECRET  
+    "FLASK_APP"                  = var.FLASK_APP
+    "MONGODB_CONNECTION_STRING"  = "mongodb://${azurerm_cosmosdb_account.main.name}:${azurerm_cosmosdb_account.main.primary_key}@${azurerm_cosmosdb_account.main.name}.mongo.cosmos.azure.com:10255/DefaultDatabase?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000"
+    "MONGO_DB_NAME"              = "${azurerm_cosmosdb_mongo_database.main.name}"
+    "LOGIN_DISABLED"             = var.LOGIN_DISABLED
+    "AUTH_CLIENTID"              = var.AUTH_CLIENTID
+    "AUTH_SECRET"                = var.AUTH_SECRET
+    "AUTH_REDIRECT_URL"          = var.AUTH_REDIRECT_URL
+    "AUTH_TOKEN_URL"             = var.AUTH_TOKEN_URL
+    "AUTH_API_URL"               = var.AUTH_API_URL
+    "APP_SECRET"                 = var.APP_SECRET
   }
 }
 
