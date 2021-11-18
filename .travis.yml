@@ -37,6 +37,7 @@ before_deploy:
 - docker build --target production --tag $DOCKER_USER/todo-app:latest .
 - docker push $DOCKER_USER/todo-app:latest
 - terraform apply -auto-approve -var "prefix=lp-prod"
+- export WEBHOOK_URL="$(terraform output -raw cd_webhook)"
 
 deploy:
   provider: script
