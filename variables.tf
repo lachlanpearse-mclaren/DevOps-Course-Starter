@@ -5,6 +5,9 @@ variable "location" {
   description = "The Azure location where all resources in this deployment should be created"
   default     = "uksouth"
 }
+variable "ARM_ACCESS_KEY" {
+    description = "The private key for the tfstate storage container"
+}
 variable "FLASK_APP" {
   description = "App Location"
   sensitive   = true

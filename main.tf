@@ -5,6 +5,13 @@ terraform {
       version = ">= 2.49"
     }
   }
+
+  backend "azurerm" {
+      resource_group_name = "McLaren1_LachlanPearse_ProjectExercise"
+      storage_account_name = "lptodoappterraformstate"
+      container_name = "tfstate"
+      key = "terraform.tfstate"
+  }
 }
 provider "azurerm" {
   features {}
