@@ -43,5 +43,5 @@ deploy:
   provider: script
   script: bash ./deploy.sh
   on:
-    branch: exercise-12
+    branch: master
   
