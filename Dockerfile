@@ -10,7 +10,6 @@ COPY ./start_todo-app.sh /app
 RUN poetry config virtualenvs.create false --local && poetry install && chmod a+x /app/start_todo-app.sh
 ENV PORT=5000
 EXPOSE 5000
-EXPOSE 2222
 ENTRYPOINT ["sh","./start_todo-app.sh"]
 
 FROM base as test
