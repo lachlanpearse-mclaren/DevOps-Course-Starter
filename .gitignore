@@ -131,4 +131,4 @@ pytestdebug.log
 terraform.tfstate
 .terraform.tfstate.lock.info
 terraform.tfstate.backup
-env.tfvars
+terraform.tfvars
