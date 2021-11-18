@@ -16,7 +16,7 @@ data "azurerm_resource_group" "main" {
 data "azurerm_cosmosdb_account" "main" {
   name                = "lp-projectexercise-db"
   resource_group_name = data.azurerm_resource_group.main.name
-  capabilities { name = "EnableServerless" }
+
 }
 
 data "azurerm_cosmosdb_mongo_database" "main" {
@@ -50,8 +50,8 @@ resource "azurerm_app_service" "main" {
   app_settings = {
     "DOCKER_REGISTRY_SERVER_URL" = "https://index.docker.io"
     "FLASK_APP"                  = var.FLASK_APP
-    "MONGODB_CONNECTION_STRING"  = "mongodb://${azurerm_cosmosdb_account.main.name}:${azurerm_cosmosdb_account.main.primary_key}@${azurerm_cosmosdb_account.main.name}.mongo.cosmos.azure.com:10255/DefaultDatabase?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000"
-    "MONGO_DB_NAME"              = "${azurerm_cosmosdb_mongo_database.main.name}"
+    "MONGODB_CONNECTION_STRING"  = "mongodb://${data.azurerm_cosmosdb_account.main.name}:${data.azurerm_cosmosdb_account.main.primary_key}@${data.azurerm_cosmosdb_account.main.name}.mongo.cosmos.azure.com:10255/DefaultDatabase?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000"
+    "MONGO_DB_NAME"              = "${data.azurerm_cosmosdb_mongo_database.main.name}"
     "LOGIN_DISABLED"             = var.LOGIN_DISABLED
     "AUTH_CLIENTID"              = var.AUTH_CLIENTID
     "AUTH_SECRET"                = var.AUTH_SECRET
