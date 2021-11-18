@@ -56,15 +56,15 @@ resource "azurerm_app_service" "main" {
   }
   app_settings = {
     "DOCKER_REGISTRY_SERVER_URL" = "https://index.docker.io"
-    "FLASK_APP"                  = var.FLASK_APP
+    "FLASK_APP"                  = "todo_app/app"
     "MONGO_DB_CONNECTION"        = "mongodb://${data.azurerm_cosmosdb_account.main.name}:${data.azurerm_cosmosdb_account.main.primary_key}@${data.azurerm_cosmosdb_account.main.name}.mongo.cosmos.azure.com:10255/DefaultDatabase?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@${data.azurerm_cosmosdb_account.main.name}@"
     "MONGO_DB_NAME"              = "${data.azurerm_cosmosdb_mongo_database.main.name}"
-    "LOGIN_DISABLED"             = var.LOGIN_DISABLED
+    "LOGIN_DISABLED"             = "False"
     "AUTH_CLIENTID"              = var.AUTH_CLIENTID
     "AUTH_SECRET"                = var.AUTH_SECRET
-    "AUTH_REDIRECT_URL"          = var.AUTH_REDIRECT_URL
-    "AUTH_TOKEN_URL"             = var.AUTH_TOKEN_URL
-    "AUTH_API_URL"               = var.AUTH_API_URL
+    "AUTH_REDIRECT_URL"          = "https://github.com/login/oauth/authorize"
+    "AUTH_TOKEN_URL"             = "https://github.com/login/oauth/access_token"
+    "AUTH_API_URL"               = "https://api.github.com/user"
     "APP_SECRET"                 = var.APP_SECRET
   }
 }
