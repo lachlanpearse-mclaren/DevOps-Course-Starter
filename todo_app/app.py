@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, logging
 from todo_app.data.todo import ToDoCard, ViewModel, get_todo_cards, move_todo_card, create_todo_card
 import datetime, os, requests, json
 from flask_login import LoginManager, login_required, UserMixin, login_user, current_user
@@ -78,6 +78,7 @@ def create_app():
 
             new_card = ToDoCard(0, new_item_title, trello_default_list, due_date, description, datetime.datetime.today())
             create_todo_card(new_card)
+            app.logger.info(f"New card created by {current_user.id}")
         return redirect(request.headers.get('Referer'))
 
     @app.route('/toggle_status', methods=['POST'])
@@ -88,6 +89,7 @@ def create_app():
             new_list_id = request.form.get('new_list_id')
 
             move_todo_card(card_id,new_list_id)
+            app.logger.info(F"Card modified by {current_user.id}, Card ID: {card_id}, New List ID: {new_list_id}")
 
         return redirect(request.headers.get('Referer'))
 
@@ -103,6 +105,7 @@ def create_app():
         print(user_id)
         
         login_user(User(user_id))
+        app.logger.info(f"User {current_user.id} logged in")
 
         return redirect('/')
 
