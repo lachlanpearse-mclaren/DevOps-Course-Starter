@@ -78,7 +78,10 @@ def create_app():
 
             new_card = ToDoCard(0, new_item_title, trello_default_list, due_date, description, datetime.datetime.today())
             create_todo_card(new_card)
-            app.logger.info(f"New card created by {current_user.id}")
+            if 'LOGIN_DISABLED' not in app.config:
+                app.logger.info(f"New card created by {current_user.id}")
+            else:
+                app.logger.info(f"New card created by TestUser")
         return redirect(request.headers.get('Referer'))
 
     @app.route('/toggle_status', methods=['POST'])
@@ -89,7 +92,10 @@ def create_app():
             new_list_id = request.form.get('new_list_id')
 
             move_todo_card(card_id,new_list_id)
-            app.logger.info(F"Card modified by {current_user.id}, Card ID: {card_id}, New List ID: {new_list_id}")
+            if 'LOGIN_DISABLED' not in app.config:
+                app.logger.info(F"Card modified by {current_user.id}, Card ID: {card_id}, New List ID: {new_list_id}")
+            else:
+                app.logger.info(F"Card modified by TestUser, Card ID: {card_id}, New List ID: {new_list_id}")
 
         return redirect(request.headers.get('Referer'))
 
