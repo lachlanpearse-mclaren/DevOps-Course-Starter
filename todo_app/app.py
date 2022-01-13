@@ -4,6 +4,9 @@ from todo_app.data.todo import ToDoCard, ViewModel, get_todo_cards, move_todo_ca
 import datetime, os, requests, json
 from flask_login import LoginManager, login_required, UserMixin, login_user, current_user
 from oauthlib.oauth2 import WebApplicationClient
+from loggly.handlers import HTTPSHandler
+from logging import Formatter
+
 
 login_manager = LoginManager()
 
@@ -34,8 +37,14 @@ def create_app():
 
     app = Flask(__name__)
     app.secret_key = os.getenv('APP_SECRET')
+    app.config['LOG_LEVEL'] = os.getenv('LOG_LEVEL')
     login_manager.init_app(app)
     app.logger.setLevel(app.config['LOG_LEVEL'])
+
+    if app.config['LOGGLY_TOKEN'] is not None:
+        handler = HTTPSHandler(f'https://logs-01.loggly.com/inputs/{app.config["LOGGLY_TOKEN"]}/tag/todo-app')
+        handler.setFormatter(Formatter("[%(asctime)s] %(levelname)s in %(module)s: %(message)s"))
+        app.logger.addHandler(handler)
 
     
     @app.route('/')
