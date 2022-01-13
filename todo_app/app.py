@@ -38,6 +38,7 @@ def create_app():
     app = Flask(__name__)
     app.secret_key = os.getenv('APP_SECRET')
     app.config['LOG_LEVEL'] = os.getenv('LOG_LEVEL')
+    app.config['LOGGLY_TOKEN'] = os.getenv('LOGGLY_TOKEN')
     login_manager.init_app(app)
     app.logger.setLevel(app.config['LOG_LEVEL'])
 
