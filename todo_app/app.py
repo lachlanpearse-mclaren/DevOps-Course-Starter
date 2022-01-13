@@ -35,6 +35,7 @@ def create_app():
     app = Flask(__name__)
     app.secret_key = os.getenv('APP_SECRET')
     login_manager.init_app(app)
+    app.logger.setLevel(app.config['LOG_LEVEL'])
 
     
     @app.route('/')
