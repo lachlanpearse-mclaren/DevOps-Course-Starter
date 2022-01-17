@@ -17,3 +17,7 @@ variable "APP_SECRET" {
   description = "Application Secret"
   sensitive   = true
 }
+variable "LOGGLY_TOKEN" {
+  description = "Loggly Secure Token"
+  sensitive   = true
+}
