@@ -1,9 +1,12 @@
 from flask import Flask
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, logging
 from todo_app.data.todo import ToDoCard, ViewModel, get_todo_cards, move_todo_card, create_todo_card
 import datetime, os, requests, json
 from flask_login import LoginManager, login_required, UserMixin, login_user, current_user
 from oauthlib.oauth2 import WebApplicationClient
+from loggly.handlers import HTTPSHandler
+from logging import Formatter
+
 
 login_manager = LoginManager()
 
@@ -34,7 +37,15 @@ def create_app():
 
     app = Flask(__name__)
     app.secret_key = os.getenv('APP_SECRET')
+    app.config['LOG_LEVEL'] = os.getenv('LOG_LEVEL')
+    app.config['LOGGLY_TOKEN'] = os.getenv('LOGGLY_TOKEN')
     login_manager.init_app(app)
+    app.logger.setLevel(app.config['LOG_LEVEL'])
+
+    if app.config['LOGGLY_TOKEN'] is not None:
+        handler = HTTPSHandler(f'https://logs-01.loggly.com/inputs/{app.config["LOGGLY_TOKEN"]}/tag/todo-app')
+        handler.setFormatter(Formatter("[%(asctime)s] %(levelname)s in %(module)s: %(message)s"))
+        app.logger.addHandler(handler)
 
     
     @app.route('/')
@@ -78,6 +89,10 @@ def create_app():
 
             new_card = ToDoCard(0, new_item_title, trello_default_list, due_date, description, datetime.datetime.today())
             create_todo_card(new_card)
+            if 'LOGIN_DISABLED' not in app.config:
+                app.logger.info(f"New card created by {current_user.id}")
+            else:
+                app.logger.info(f"New card created by TestUser")
         return redirect(request.headers.get('Referer'))
 
     @app.route('/toggle_status', methods=['POST'])
@@ -88,6 +103,10 @@ def create_app():
             new_list_id = request.form.get('new_list_id')
 
             move_todo_card(card_id,new_list_id)
+            if 'LOGIN_DISABLED' not in app.config:
+                app.logger.info(F"Card modified by {current_user.id}, Card ID: {card_id}, New List ID: {new_list_id}")
+            else:
+                app.logger.info(F"Card modified by TestUser, Card ID: {card_id}, New List ID: {new_list_id}")
 
         return redirect(request.headers.get('Referer'))
 
@@ -103,6 +122,7 @@ def create_app():
         print(user_id)
         
         login_user(User(user_id))
+        app.logger.info(f"User {current_user.id} logged in")
 
         return redirect('/')
 

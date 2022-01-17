@@ -7,10 +7,10 @@ terraform {
   }
 
   backend "azurerm" {
-      resource_group_name = "McLaren1_LachlanPearse_ProjectExercise"
-      storage_account_name = "lptodoappterraformstate"
-      container_name = "tfstate"
-      key = "terraform.tfstate"
+    resource_group_name  = "McLaren1_LachlanPearse_ProjectExercise"
+    storage_account_name = "lptodoappterraformstate"
+    container_name       = "tfstate"
+    key                  = "terraform.tfstate"
   }
 }
 provider "azurerm" {
@@ -66,6 +66,8 @@ resource "azurerm_app_service" "main" {
     "AUTH_TOKEN_URL"             = "https://github.com/login/oauth/access_token"
     "AUTH_API_URL"               = "https://api.github.com/user"
     "APP_SECRET"                 = var.APP_SECRET
+    "LOG_LEVEL"                  = "INFO"
+    "LOGGLY_TOKEN"               = var.LOGGLY_TOKEN
   }
 }
 
