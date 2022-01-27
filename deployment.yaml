@@ -1,0 +1,59 @@
+# deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: module-14
+spec:
+  selector:
+    matchLabels:
+      app: module-14
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: module-14
+    spec:
+      containers:
+      - name: todo-app
+        image: todo_app:prod
+        ports:
+        - containerPort: 80
+        imagePullPolicy: Never
+        env:
+        - name: MONGO_DB_CONNECTION
+          valueFrom: 
+            secretKeyRef: 
+              name: module-14
+              key: MONGO_DB_CONNECTION
+        - name: MONGO_DB_NAME
+          value: "todo_app"
+        - name: LOGIN_DISABLED
+          value: "False"
+        - name: AUTH_CLIENTID
+          valueFrom: 
+            secretKeyRef: 
+              name: module-14
+              key: AUTH_CLIENTID
+        - name: AUTH_SECRET
+          valueFrom: 
+            secretKeyRef: 
+              name: module-14
+              key: AUTH_SECRET
+        - name: AUTH_REDIRECT_URL
+          value: "https://github.com/login/oauth/authorize"
+        - name: AUTH_TOKEN_URL
+          value: "https://github.com/login/oauth/access_token"
+        - name: AUTH_API_URL
+          value: "https://api.github.com/user"
+        - name: APP_SECRET
+          valueFrom: 
+            secretKeyRef: 
+              name: module-14
+              key: APP_SECRET
+        - name: LOG_LEVEL
+          value: "INFO"
+        - name: LOGGLY_TOKEN
+          valueFrom: 
+            secretKeyRef: 
+              name: module-14
+              key: LOGGLY_TOKEN
