@@ -112,3 +112,50 @@ The return URL once your user is authentication should be https://your.app.url/l
 This app is now configured to deploy to an Azure App Service container as well as a container on Heroku. You can view the running application at:
 
 https://lp-todo-app.azurewebsites.net 
+
+## Run App Locally via Minicube
+
+There is now a basic deployment.yaml and service.yaml file you can use to configure this application to run inside a Minikube cluster. 
+
+You will need to have Minikube installed, as well as Docker and kubectl before you can apply this deployment. 
+
+Once minikube is running, you can begin customising the YAML files. You can modify any names as you see fit. You will also need to create a secret to store your various secrets and connection strings. See the below command example to create your secrets:
+
+```bash
+$ kubectl create secret generic module-14 --from-literal=MONGO_DB_CONNECTION='YOUR MONGO CONNECTION HERE' \
+--from-literal=AUTH_CLIENTID=YOUR_CLIENTID_HERE \
+--from-literal=AUTH_SECRET=YOUR_SECRET_HERE \
+--from-literal=APP_SECRET=YOUR_APP_SECRET_HERE \
+--from-literal=LOGGLY_TOKEN=YOUR_LOGGLY_TOKEN_HERE 
+```
+Once your secrets are added, you will need to build a docker image and import it into Minikube's repository:
+
+```bash
+$ docker build --target production --tag todo-app:prod .
+```
+```bash
+$ minikube image load todo-app:prod
+```
+
+Now you can apply the deployment and service files:
+
+```bash
+$ kubectl apply -f ./deployment.yaml 
+```
+```bash
+$ kubectl apply -f ./service.yaml 
+```
+
+Your pod should be running now:
+
+```bash
+$ kubectl get pods
+```
+
+Forward your port 5000 to port 5000 in your pod:
+
+```bash
+$ kubectl port-forward service/module-14 5000:5000
+```
+
+Your application should load successfully at this point.
